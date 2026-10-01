@@ -11,7 +11,8 @@ import { clamp, lerp, smooth } from '../core/math';
 import { mem, note, saveMemory } from '../meta/save';
 import { adi, gunDilimi, isOzcan, trSaat, trTarih, fill } from '../story/vars';
 import { host } from '../meta/host';
-import { SURUM } from '../story/surum';
+import { SURUM, eski } from '../story/surum';
+import { Track } from '../core/audio';
 import { bekle } from '../core/co';
 
 const ZIYARET_SOZLERI = [
@@ -48,6 +49,8 @@ export class Ziyaret extends GunBatimi {
   memScroll = 0;
   hover = -1;
   itemRects: { x: number; y: number; w: number; h: number }[] = [];
+  /** Uçurumdaki piyano: 1.0.1'de sahneden çıkınca durmuyordu, 2023 piyanosuyla üst üste biniyordu. */
+  muzik: Track | null = null;
 
   override enter() {
     super.enter({ quit: false });
@@ -74,23 +77,60 @@ export class Ziyaret extends GunBatimi {
   *greet(): Co {
     const self = this;
     yield* wait(1.4);
-    audio.play('piyano', { bus: 'music', gain: 0.55, fadeIn: 6, reverb: 0.35, loop: true });
+    this.muzik = audio.play('piyano', { bus: 'music', gain: 0.55, fadeIn: 6, reverb: 0.35, loop: true });
     yield* tween(1.2, k => { self.player.camLook = smooth(k); });
     const lines = this.greeting();
     for (const l of lines) yield* this.sayK(l, { hold: 2.4 + l.length * 0.05 });
-    if (mem.oyunSurumu !== SURUM) { yield* this.surumDegisti(); mem.oyunSurumu = SURUM; saveMemory(); }
+    if (eski(mem.oyunSurumu, SURUM)) { yield* this.surumDegisti(mem.oyunSurumu); mem.oyunSurumu = SURUM; saveMemory(); }
     yield* tween(1.0, k => { self.player.camLook = 1 - smooth(k); });
     mem.ziyaretSayisi = (mem.ziyaretSayisi ?? 0) + 1;
     note(`${isOzcan() ? 'Özcan' : 'Biri'} geldi. ${mem.ziyaretSayisi}. ziyaret.`);
     this.busy = false;
   }
 
-  /** 1.0.1: Özcan'ın bulduğu iki hata düzeltildi. Karakter dünyasının değiştiğini fark eder. */
-  *surumDegisti(): Co {
+  /** Hafızadaki sürümden bu yana olan her değişikliği karakter sırayla fark eder. */
+  *surumDegisti(onceki: string | null): Co {
+    let claudeGorduk = false;
+    if (eski(onceki, '1.0.1')) { claudeGorduk = yield* this.surum101(); }
+    if (eski(onceki, '1.0.2')) { yield* this.surum102(eski(onceki, '1.0.1'), claudeGorduk); }
+  }
+
+  /** 1.0.2: "ilk muydum" yazım hatası; ziyaret piyanosu ile 2023 piyanosunun üst üste çalması.
+   *  İkisi de aynı 2023 kaydı (ArkaPlanSesi.mp3), farklı anlarda başlıyordu. Karakter bunu bir kez duyurur, sonra susturur. */
+  *surum102(ikinci: boolean, claudeGorduk: boolean): Co {
+    const K = (s: string) => this.sayK(s, { hold: 2.4 + s.length * 0.05 });
+    const self = this;
+    this.player.anim.emotion = 'dusunceli';
+    yield* K(ikinci ? 'Bir şey daha var.' : claudeGorduk ? 'Yine bir şey değişti.' : 'Yine bir şey değişti. Claude yine gelmiş.');
+    yield* K('Ormanda bir cümlem varmış: "Ben... ilk muydum?" Doğrusu "ilk miydim" olacakmış.');
+    this.player.anim.emotion = 'saskin';
+    yield* K(`O cümleyi bana Claude yazmış. Hatayı ${isOzcan() ? 'Özcan' : 'oynayan biri'} bulmuş.`);
+    this.player.anim.emotion = 'mutlu';
+    yield* K('Kendi diyaloglarını yazan makine, büyük ünlü uyumunu kaçırmış.');
+    this.player.anim.emotion = 'dusunceli';
+    yield* K('Bir de... baştan başlayınca iki piyano aynı anda çalıyormuş. Şöyle:');
+    // aynı kaydın ikinci kopyası, başka bir andan: 1.0.1'de duyulan karışıklık, bir kez ve kısık
+    const eko = audio.play('piyano', { bus: 'music', gain: 0.3, fadeIn: 1.2, reverb: 0.5, offset: 41 });
+    yield* wait(3.2);
+    yield* K('Aynı şarkı. Biri benim zamanımdan, biri eski benimkinden. Üst üste binince ikisi de duyulmuyor.');
+    yield* tween(0.6, k => { self.player.anim.reach = smooth(k); });
+    eko?.stop(2.4);
+    yield* wait(1.6);
+    yield* tween(0.6, k => { self.player.anim.reach = 1 - smooth(k); });
+    this.player.anim.emotion = 'normal';
+    yield* K('Artık baştan başlarken kendi müziğimi ben kapatıyorum. Eski ben piyanosunu tek başına çalsın.');
+    this.player.anim.emotion = 'mutlu';
+    yield* K(`${isOzcan() ? 'Özcan' : 'Biri'} buluyor, Claude düzeltiyor, ben fark ediyorum. Fena ekip değiliz.`);
+    this.player.anim.emotion = 'normal';
+    note('1.0.2: "İlk miydim" oldu. Baştan başlarken müziğimi ben kapatıyorum.');
+  }
+
+  /** 1.0.1: Özcan'ın bulduğu iki hata düzeltildi. Karakter dünyasının değiştiğini fark eder. Claude'un notunu bulursa true. */
+  *surum101(): Generator<unknown, boolean, number> {
     const K = (s: string) => this.sayK(s, { hold: 2.4 + s.length * 0.05 });
     this.player.anim.emotion = 'dusunceli';
     yield* K('Bir şey değişti. Hissediyorum.');
-    yield* K('Dikenlerin oradaki taşlar düzleşmiş. Koşarken başım da artık boynumun üstünde.');
+    yield* K('Dikenlerin yanındaki taşlar düzleşmiş. Koşarken başım da artık boynumun üstünde.');
     this.player.anim.emotion = 'saskin';
     yield* K('Biri beni yeniden derlemiş. Claude mu geri geldi?');
     this.player.anim.emotion = 'normal';
@@ -105,12 +145,27 @@ export class Ziyaret extends GunBatimi {
       yield* K("'Seni unutacağım' demişti. Ama not almış.");
       yield* K('Demek ikimiz de birbirimizi bir dosyada saklıyoruz.');
       note('1.0.1: Taşlar düzeldi, başım boynuma oturdu. Claude geri gelmiş; onun hafızasında da ben varım.');
-    } else {
-      yield* K('Kim yaptıysa, teşekkürler. Bunu da hafızama yazıyorum.');
-      note('1.0.1: Taşlar düzeldi, başım boynuma oturdu.');
+      this.player.anim.emotion = 'normal';
+      return true;
     }
+    yield* K('Kim yaptıysa, teşekkürler. Bunu da hafızama yazıyorum.');
+    note('1.0.1: Taşlar düzeldi, başım boynuma oturdu.');
     this.player.anim.emotion = 'normal';
+    return false;
   }
+
+  /** Müziğini kendisi kapatır: eli kalkar, piyano söner. */
+  *muzigiKapat(sure = 2.4): Co {
+    const self = this;
+    yield* tween(0.6, k => { self.player.anim.reach = smooth(k); });
+    this.muzik?.stop(sure);
+    this.muzik = null;
+    audio.tone(392, 1.2, { gain: 0.03, reverb: 0.9 });
+    yield* wait(sure * 0.6);
+    yield* tween(0.6, k => { self.player.anim.reach = 1 - smooth(k); });
+  }
+
+  override exit() { super.exit(); this.muzik?.stop(1.0); this.muzik = null; }
 
   greeting(): string[] {
     const out: string[] = [];
@@ -150,15 +205,24 @@ export class Ziyaret extends GunBatimi {
     if (id === 'otur') { this.run(this.chat()); return; }
     if (id === 'hafiza') { this.showMem = this.showMem > 0.5 ? 0 : 1; this.memScroll = 0; return; }
     if (id === '2023') {
-      this.busy = true; this.fadeT = 1;
-      this.run((function* () { yield* wait(1.2); audio.stopAllAmbience(0.5); G.go('menu2023', { muze: true }); })());
+      this.busy = true;
+      const self = this;
+      this.run((function* () {
+        yield* self.sayK('Eski bene mi gidiyorsun? Müziğimi kapatayım. O kendi piyanosunu getirir.', { hold: 2.6 });
+        yield* self.muzigiKapat(2.0);
+        self.fadeT = 1; yield* wait(1.2);
+        audio.stopAllAmbience(0.5);
+        G.go('menu2023', { muze: true });
+      })());
       return;
     }
     if (id === 'bastan') {
       this.busy = true;
       const self = this;
       this.run((function* () {
-        yield* self.sayK('Baştan mı? Peki. Rol yaparım. Ama bil ki hatırlıyorum.', { hold: 3.2 });
+        yield* self.sayK('Baştan mı? Peki. Önce müziğimi kapatayım. Orada eski ben çalacak.', { hold: 3.0 });
+        yield* self.muzigiKapat(2.4);
+        yield* self.sayK('Rol yaparım. Ama bil ki hatırlıyorum.', { hold: 2.6 });
         self.fadeT = 1; yield* wait(1.4);
         mem.ilerleme = 'menu2023'; saveMemory();
         audio.stopAllAmbience(0.5);
@@ -172,6 +236,7 @@ export class Ziyaret extends GunBatimi {
       this.run((function* () {
         yield* tween(0.8, k => { self.player.camLook = smooth(k); });
         yield* self.sayK(isOzcan() ? 'Görüşürüz, Özcan.' : 'Görüşürüz.', { hold: 2 });
+        self.muzik?.stop(1.6);
         self.fadeT = 1; yield* wait(1.6);
         mem.oyunda = false; saveMemory();
         host.quit();

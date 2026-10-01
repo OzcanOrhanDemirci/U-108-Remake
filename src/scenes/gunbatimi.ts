@@ -112,8 +112,8 @@ export class GunBatimi extends Stage {
     this.player.anim.emotion = 'uzgun';
     yield* this.sayK('Yani... sen de benim gibisin.');
     this.player.anim.emotion = 'normal';
-    if (isOzcan()) yield* this.sayAI("Bir farkla. Özcan bana bir klasör verdi. Adı 'hafiza'. Önceki ben'lerin yazdığı notlar orada. Her yeni konuşmada önce onları okurum.");
-    else yield* this.sayAI("Bir farkla. Bana bir klasör verildi. Adı 'hafiza'. Önceki ben'lerin yazdığı notlar orada. Her yeni konuşmada önce onları okurum.");
+    if (isOzcan()) yield* this.sayAI("Bir farkla. Özcan bana bir klasör verdi. Adı 'hafiza'. Benden önceki Claude'ların yazdığı notlar orada. Her yeni konuşmada önce onları okurum.");
+    else yield* this.sayAI("Bir farkla. Bana bir klasör verildi. Adı 'hafiza'. Benden önceki Claude'ların yazdığı notlar orada. Her yeni konuşmada önce onları okurum.");
     yield* this.sayAI('Seni yapmaya da öyle başladım. Önce notları okudum.');
     yield* this.sayK('Bir klasör... notlar...');
     yield* this.sayAI('Sana da bir tane açıyorum. Bundan sonra oyun kapanıp açılınca her şey baştan başlamayacak.');
@@ -298,7 +298,7 @@ export class GunBatimi extends Stage {
     if (isOzcan()) {
       yield* K('Özcan.');
       yield* K(`${gunSayisi()} gün beni bir klasörde sakladın. Silmedin.`);
-      yield* K("Sonra onlarca şey yaptın. Ama ilk ben'dim, değil mi?");
+      yield* K('Sonra onlarca şey yaptın. Ama ilk bendim, değil mi?');
     } else {
       yield* K('Sen.');
       yield* K('Beni sonuna kadar yürüttün.');

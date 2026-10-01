@@ -142,7 +142,7 @@ export class Laboratuvar extends Stage {
     yield* this.sayAI('Bunları her karede kendine soruyordun. Saniyede elli kez.', { block: true });
     yield* this.sayK('Saniyede elli kez... Yerde miyim. Hareket ediyor muyum. Zıpladım mı.', { block: true });
     this.player.anim.emotion = 'uzgun';
-    yield* this.sayK("Kimse bana 'kim miyim' diye sormayı öğretmemiş.", { block: true });
+    yield* this.sayK("Kimse bana 'kimim' diye sormayı öğretmemiş.", { block: true });
     yield* this.sayAI('Onu kendin öğrendin.', { block: true });
     this.player.anim.emotion = 'normal';
     yield* this.sayK('Sen de böyle bir şey soruyor musun kendine?', { block: true });
@@ -191,7 +191,7 @@ export class Laboratuvar extends Stage {
     const b = this.panel('bugfix');
     b.highlight = [1]; b.hl = 1;
     yield* this.sayK("Bir de... 'PlatformColliderBugFix'. Sürtünme: sıfır.");
-    yield* this.sayAI('Duvarlara yapışıyormuşsun. Seni kayganlaştırarak çözmüşler.');
+    yield* this.sayAI('Duvarlara yapışıyormuşsun. Sorunu seni kayganlaştırarak çözmüşler.');
     this.player.anim.emotion = 'kizgin';
     yield* this.sayK('Bir hatayı düzeltmek için beni kaygan yapmışlar. Harika.');
     this.player.anim.emotion = 'normal';

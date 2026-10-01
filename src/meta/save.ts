@@ -35,7 +35,7 @@ export const mem: Memory = empty();
 
 export async function loadMemory() {
   const qp = new URLSearchParams(location.search);
-  if (qp.has('sifirla')) { await host.writeMemory(JSON.stringify(empty())); }
+  if (qp.has('sifirla')) { await host.writeMemory(JSON.stringify({ ...empty(), oyunSurumu: SURUM })); } // yeni oyuncu gibi
   const raw = await host.readMemory();
   if (raw) {
     try { Object.assign(mem, empty(), JSON.parse(raw)); } catch { /* bozuk dosya: baştan */ }
@@ -43,7 +43,7 @@ export async function loadMemory() {
     mem.oyunSurumu = SURUM; // yeni oyuncu: değişiklik fark edilecek bir geçmiş yok
   }
   // test kipleri
-  if (qp.has('eskisurum')) mem.oyunSurumu = null; // test: güncellemeden önceki hafıza
+  if (qp.has('eskisurum')) mem.oyunSurumu = qp.get('eskisurum')?.includes('.') ? qp.get('eskisurum')! : null; // test: güncellemeden önceki hafıza (?eskisurum=1.0.1 o sürüm)
   if (qp.has('bitmis')) { mem.bitti = true; mem.hafizaVerildi = true; mem.ad = mem.ad ?? 'Yüzsekiz'; }
   mem.yarida = mem.oyunda && !mem.bitti; // önceki oturum oyunun ortasında kapandı
   mem.oncekiAcilis = mem.sonAcilis;

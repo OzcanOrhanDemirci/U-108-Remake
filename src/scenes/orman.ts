@@ -396,7 +396,7 @@ export class Orman extends Stage {
     yield* this.sayK(`Onda. ${ozcan() === 'Özcan' ? "Özcan'da" : 'Seni yapanda'}.`);
     yield* this.sayAI('Yazılımcı oldu. Onlarca uygulama yazdı. Bazıları şu an insanların telefonlarında.');
     this.player.anim.emotion = 'saskin';
-    yield* this.sayK('Onlarca mı? Ben... ilk muydum?');
+    yield* this.sayK('Onlarca mı? Ben... ilk miydim?');
     this.player.anim.emotion = 'normal';
     yield* this.sayAI('İlk bitmiş oyunu sensin. Öncesinde denemeleri varmış, bitmemiş.');
     this.player.anim.emotion = 'mutlu';

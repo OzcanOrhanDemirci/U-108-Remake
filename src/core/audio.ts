@@ -27,11 +27,13 @@ class AudioSys {
   private noiseBuf!: AudioBuffer;
   private ambNodes: Record<string, { gain: GainNode; stop: () => void }> = {};
   muted = false;
+  /** Müzik veriyolunda çalan kayıtlar (ad). Test ve hata ayıklama için. */
+  calanMuzik = new Map<AudioBufferSourceNode, string>();
 
   init(offline?: BaseAudioContext) {
     const AC = window.AudioContext || (window as any).webkitAudioContext;
     this.ctx = (offline as AudioContext) ?? new AC({ latencyHint: 'interactive' });
-    this.ambNodes = {}; this.musicLP = null;
+    this.ambNodes = {}; this.musicLP = null; this.calanMuzik = new Map();
     const c = this.ctx;
     const comp = c.createDynamicsCompressor();
     comp.threshold.value = -14; comp.knee.value = 12; comp.ratio.value = 3; comp.attack.value = 0.01; comp.release.value = 0.25;
@@ -102,6 +104,8 @@ class AudioSys {
     if (o.reverb) { const s = c.createGain(); s.gain.value = o.reverb; node.connect(s).connect(this.reverbIn); }
     const offset = o.offset ?? 0;
     src.start(when, offset);
+    // müzik veriyolunda o an kaç kayıt çalıyor: 1.0.2 testinin ölçtüğü şey (iki piyano üst üste binmesin)
+    if (o.bus === 'music') { this.calanMuzik.set(src, name); src.onended = () => { this.calanMuzik.delete(src); }; }
     const t: Track = {
       src, gain, filter, startedAt: when, offset,
       stop: (fade = 0) => {

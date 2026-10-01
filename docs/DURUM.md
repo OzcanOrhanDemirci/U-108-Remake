@@ -16,7 +16,7 @@ Orijinal klasör `C:\Users\ozcan\Desktop\U-108` **yalnız okunur**. GitHub'a git
 - Kabuk testi (görünmez, sessiz, odak almaz): `U108_TEST=1` (+ `U108_SAHNE`, `U108_BEKLE`) → `%TEMP%\u108_test\`.
 - Hafıza dosyası: `%APPDATA%\U-108\hafiza.json` (silinirse oyun baştan, 2023 menüsüyle açılır).
 
-## Durum (2026-10-01, ilk tam sürüm; 1.0.1 aşağıda)
+## Durum (2026-10-01, ilk tam sürüm; 1.0.1 ve 1.0.2 aşağıda)
 Tamam ve doğrulandı:
 - 2023 açılışı birebir: menü, diyaloglar, 1. bölüm. Geometri, fizik (hız 2, zıplama 5, g 9,81, 50 Hz), yazı hızı
   (0,1 sn/harf, noktada +1 sn), düğme ve yazı yerleşimleri build'den UnityPy ile okundu.
@@ -47,6 +47,20 @@ Doğrulanmadı (Özcan'da):
   ⚠️ O notun **Ne:** cümlesi silinir ya da noktasız yazılırsa alıntı düşer (karakter yalnız teşekkür eder).
 - Konuşma kuyruğu: tetiklenen konuşmalar üst üste binmez; dikenli bölüm konuşması süreni keser.
 - Bot tam oyunu yine 0 ölümle bitirdi; paketli exe görünmez kipte hafıza notunu okudu.
+
+## 1.0.2 (2026-10-02): yazım hatası ve üst üste çalan piyano, yine hikâyenin içinde
+- **"ilk muydum" → "ilk miydim"** (Orman). Bütün replikler (303 satır) bir kez daha okundu; dil cilası: "kim miyim" → "kimim"
+  (Laboratuvar), "Önceki ben'lerin" → "Benden önceki Claude'ların" ve "ilk ben'dim" → "ilk bendim" (Gün Batımı).
+- **Müzik karışması:** Ziyaret ekranının piyanosu döngüde çalıyor, tutamağı saklanmıyordu; "Baştan başla" ya da "2023'ü oyna"
+  seçilince durmadan 2023 sahnesinin piyanosunun üstüne biniyordu. İkisi de aynı 2023 kaydı (`ArkaPlanSesi.mp3`), farklı anlarda
+  başlıyordu. Şimdi tutamak `Ziyaret.muzik`; karakter seçimden sonra kolunu güneşe uzatıp kendi müziğini kapatır
+  ("Önce müziğimi kapatayım. Orada eski ben çalacak."), `exit()` da her çıkışta güvence olarak durdurur.
+- **Ölçüm:** `audio.calanMuzik` müzik veriyolunda çalan kayıtları tutar. `tools/senaryolar/muzik102.mjs` geçişten sonra sayar:
+  düzeltmeyle `["piyano2023"]`; tutamak silinince (1.0.1 davranışı) `["piyano","piyano2023"]`, yani test hatayı yakalıyor.
+- **Sürüm farkındalığı sürüm sürüm:** `eski(a, b)` karşılaştırması; 1.0.1'i görmüş oyuncu yalnız 1.0.2 konuşmasını, hiç görmemiş
+  olan ikisini sırayla duyar. 1.0.2'de karakter hatayı Claude'un yazdığını, Özcan'ın bulduğunu söyler; iki piyanoyu bir kez,
+  kısık, kendisi duyurur ve elini uzatıp susturur. Test: `?eskisurum=1.0.1` (o sürüm) ya da `?eskisurum=1` (sürümsüz hafıza).
+- `?sifirla=1` artık yeni oyuncu gibi sıfırlar (sürüm yazılı), eski hafızayı taklit etmez.
 
 ## Açık / sonraki
 - Özcan oynayınca: his, ses, metin tonu geri bildirimi → düzeltme turu.
