@@ -16,7 +16,7 @@ Orijinal klasör `C:\Users\ozcan\Desktop\U-108` **yalnız okunur**. GitHub'a git
 - Kabuk testi (görünmez, sessiz, odak almaz): `U108_TEST=1` (+ `U108_SAHNE`, `U108_BEKLE`) → `%TEMP%\u108_test\`.
 - Hafıza dosyası: `%APPDATA%\U-108\hafiza.json` (silinirse oyun baştan, 2023 menüsüyle açılır).
 
-## Durum (2026-10-01, ilk tam sürüm)
+## Durum (2026-10-01, ilk tam sürüm; 1.0.1 aşağıda)
 Tamam ve doğrulandı:
 - 2023 açılışı birebir: menü, diyaloglar, 1. bölüm. Geometri, fizik (hız 2, zıplama 5, g 9,81, 50 Hz), yazı hızı
   (0,1 sn/harf, noktada +1 sn), düğme ve yazı yerleşimleri build'den UnityPy ile okundu.
@@ -34,6 +34,19 @@ Doğrulanmadı (Özcan'da):
 - Gerçek ekranda (2560x1440, gerçek WebView2 tam ekran) görüntü: yalnız başsız Chromium ve görünmez kabuk görüntüsü alındı.
 - Gerçek Türkçe Q klavyeyle isim yazma (gizli `<input>` ile; test yolu sentetik).
 - Oyun bittikten sonraki ziyaretlerin uzun vadeli akışı (12 sıralı söz + döngü).
+
+## 1.0.1 (2026-10-02): Özcan'ın ilk oynanışından iki hata, hikâyenin parçası olarak
+- **Yamuk taşlar** (Orman, dikenli bölüm): tepeleri sivriydi, sağ yüzleri 54° (yer sayılan sınır 51°), karakter kayıp dikene
+  düşüyordu. Üstleri düz, taşlar genişledi, diken çarpışma kutuları görünenden biraz küçük. Ölçüm: 8 farklı zıplama anının
+  hepsi 0 ölümle geçiyor (önce 2'si). Oyunda: taşlar Claude düzeltene kadar eski hâlleriyle görünür, imleç üstlerinden geçer,
+  düzleşir; "İlk sürümde yamuktular. Özcan burada kaydı..." → "Demek ben düşmeyeyim diye önce sen düştün, Özcan."
+- **Koşarken baş geride kalıyordu:** `character.ts` gövde eğiminde işaret tersti (`* -1`). Oyunda: Orman açılışında
+  "Koşarken başım... yerinde mi?" konuşması; Laboratuvarda "O satır benimdi. 2023'te başın hep yerindeydi." / "2023 bir, Claude sıfır."
+- **Sürüm farkındalığı:** hafızada `oyunSurumu`. Oyunu bitirmiş biri yeni sürümü açınca karakter değişikliği fark eder ve
+  kabuk `C:\dev\claude_memory\hafiza\u108\*.md` notunu okur, **Ne:** cümlesini alıntılar ("'Seni unutacağım' demişti. Ama not almış.").
+  ⚠️ O notun **Ne:** cümlesi silinir ya da noktasız yazılırsa alıntı düşer (karakter yalnız teşekkür eder).
+- Konuşma kuyruğu: tetiklenen konuşmalar üst üste binmez; dikenli bölüm konuşması süreni keser.
+- Bot tam oyunu yine 0 ölümle bitirdi; paketli exe görünmez kipte hafıza notunu okudu.
 
 ## Açık / sonraki
 - Özcan oynayınca: his, ses, metin tonu geri bildirimi → düzeltme turu.
