@@ -83,6 +83,11 @@ class Sequencer {
   }
   stop() { this.piece = 'sessiz'; }
 
+  /** Test: verilen zamana kadar her şeyi önceden planla (çevrimdışı ölçüm). */
+  scheduleUntil(t: number) {
+    while (this.piece !== 'sessiz' && this.next < t) { const d = this.scheduleBar(this.piece, this.next, this.bar); this.next += d; this.bar++; }
+  }
+
   /** Her karede çağrılır; 0,4 sn ileriyi planlar. */
   update() {
     if (this.piece === 'sessiz' || !audio.ctx) return;
@@ -175,7 +180,7 @@ export function dogusSwell(when: number) {
   });
   // çözülme
   const res = [32, 44, 51, 56, 60, 63, 68, 72, 75];
-  res.forEach((m, i) => piano(m, t + i * 0.035, 0.55, { len: 2.5, reverb: 1, bright: 1.2 }));
-  pad([44, 51, 56, 60, 63], t, 10, { gain: 0.06, cutoff: 1400, reverb: 0.9 });
+  res.forEach((m, i) => piano(m, t + i * 0.035, 0.4, { len: 2.5, reverb: 1, bright: 1.1 }));
+  pad([44, 51, 56, 60, 63], t, 10, { gain: 0.045, cutoff: 1400, reverb: 0.9 });
   return t - when;
 }

@@ -129,7 +129,7 @@ export class Orman extends Stage {
     } else {
       host.setTitle('U-108');
       music.play('orman', 1.5);
-      audio.ambience('ruzgar', 0.5, 3); audio.ambience('yaprak', 0.25, 3);
+      audio.ambience('ruzgar', 0.32, 3); audio.ambience('yaprak', 0.22, 3);
       this.run(this.script());
     }
     this.debugPlace();
@@ -157,6 +157,7 @@ export class Orman extends Stage {
     this.cam.tx = this.player.x; this.cam.ty = this.player.y - 0.95; this.cam.snap();
     this.player.anim.emotion = 'gozkapali';
     this.player.rim.strength = 0;
+    G.P.lift = [0, 0, 0];
     this.run(this.introScript());
   }
 
@@ -212,7 +213,7 @@ export class Orman extends Stage {
     this.player.anim.emotion = 'normal';
     // 5) dünya aşağıdan yükselerek kurulur
     this.cam.tViewH = 8.4; this.cam.offY = -2.0; this.cam.k = 1.2;
-    audio.ambience('ruzgar', 0.5, 6); audio.ambience('yaprak', 0.25, 6);
+    audio.ambience('ruzgar', 0.32, 6); audio.ambience('yaprak', 0.22, 6);
     this.run((function* () { yield* tween(4, k => { self.introSky = k; self.reb.light = 1 - k * 0.8; }); })());
     for (let i = 0; i < 8; i++) {
       const idx = i;
@@ -233,6 +234,7 @@ export class Orman extends Stage {
     yield* tween(2.2, k => { self.title.a = k; });
     yield* tween(1.2, k => { self.title.sub = k; });
     music.play('orman', 0.5);
+    G.P.lift = [0.03, 0.0, 0.04];
     yield* wait(3.2);
     yield* tween(1.6, k => { self.title.a = 1 - k; self.title.sub = 1 - k; });
     this.cam.k = 3.2; this.cam.lead = 1.6;

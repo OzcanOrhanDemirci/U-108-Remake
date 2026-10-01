@@ -1,5 +1,6 @@
 import { G, params } from './game';
 import { audio } from './core/audio';
+import { music, dogusSwell } from './core/music';
 import { loadAll } from './core/assets';
 import { testKarakter } from './scenes/test_karakter';
 import { ikon } from './scenes/ikon';
@@ -21,6 +22,7 @@ import { setEnv } from './story/vars';
 
 // test araçları için (planlayıcı, bot)
 (window as any).__fizik = { World, Controller2023, BOLUM1, BOLUM2, SIYAH_W, SIYAH_H };
+(window as any).__ses = { audio, music, dogusSwell };
 
 async function boot() {
   G.init();

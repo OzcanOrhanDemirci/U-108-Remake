@@ -169,7 +169,9 @@ function drawCredits2023(ctx: CanvasRenderingContext2D, W: number, H: number, te
   const bx = ox + 1719 * s, by = 925.4 * s, bw = 160 * s, bh = 137.2 * s;
   ctx.save(); ctx.filter = `brightness(${down ? 0.25 : hover ? 0.3 : 0.32})`; ctx.drawImage(IMG.devamBtn, bx, by, bw, bh); ctx.restore();
   ctx.fillStyle = '#fff'; ctx.font = `${20 * s}px ${FONT.dugme2023}`; ctx.textBaseline = 'middle';
-  ctx.fillText('OYUNU KAPAT', bx + bw / 2 + 4.4 * s, by + bh / 2);
+  // TMP sözcük kaydırma açık: 160 px'lik düğmede iki satır
+  ctx.fillText('OYUNU', bx + bw / 2 + 4.4 * s, by + bh / 2 - 12 * s);
+  ctx.fillText('KAPAT', bx + bw / 2 + 4.4 * s, by + bh / 2 + 12 * s);
   ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
 }
 

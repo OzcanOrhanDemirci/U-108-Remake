@@ -68,7 +68,7 @@ export class Sonbahar extends Stage {
     this.cam.tx = this.player.x; this.cam.ty = this.player.y - 2; this.cam.snap();
     this.fadeColor = [1, 1, 1]; this.fade = 1; this.fadeT = 0;
     music.play('sonbahar', 1.5);
-    audio.ambience('ruzgar', 0.4, 3); audio.ambience('yaprak', 0.4, 3);
+    audio.ambience('ruzgar', 0.28, 3); audio.ambience('yaprak', 0.3, 3);
     this.buildTriggers();
     this.run(this.script());
     this.debugPlace();

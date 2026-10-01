@@ -28,9 +28,10 @@ class AudioSys {
   private ambNodes: Record<string, { gain: GainNode; stop: () => void }> = {};
   muted = false;
 
-  init() {
+  init(offline?: BaseAudioContext) {
     const AC = window.AudioContext || (window as any).webkitAudioContext;
-    this.ctx = new AC({ latencyHint: 'interactive' });
+    this.ctx = (offline as AudioContext) ?? new AC({ latencyHint: 'interactive' });
+    this.ambNodes = {}; this.musicLP = null;
     const c = this.ctx;
     const comp = c.createDynamicsCompressor();
     comp.threshold.value = -14; comp.knee.value = 12; comp.ratio.value = 3; comp.attack.value = 0.01; comp.release.value = 0.25;

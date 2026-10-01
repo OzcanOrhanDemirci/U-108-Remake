@@ -199,8 +199,8 @@ export class Ziyaret extends GunBatimi {
       ctx.globalAlpha = this.showMem;
       ctx.fillStyle = 'rgba(8,3,12,0.82)'; ctx.fillRect(0, 0, W, H);
       const pw = Math.min(W * 0.62, 1100 * s), px = W / 2 - pw / 2, py = H * 0.1, ph = H * 0.8;
-      ctx.fillStyle = '#FFF6E6'; ctx.beginPath(); ctx.roundRect(px, py, pw, ph, 10 * s); ctx.fill();
-      ctx.fillStyle = '#B07050'; ctx.font = `500 ${18 * s}px ${FONT.mono}`; ctx.textAlign = 'left';
+      ctx.fillStyle = '#D6C3A1'; ctx.beginPath(); ctx.roundRect(px, py, pw, ph, 10 * s); ctx.fill(); // parlamaya girmeyecek kadar koyu kâğıt
+      ctx.fillStyle = '#6E3E22'; ctx.font = `500 ${18 * s}px ${FONT.mono}`; ctx.textAlign = 'left';
       ctx.fillText(`hafiza.json  ·  ${adi()}  ·  ${mem.notlar.length} not`, px + 40 * s, py + 50 * s);
       ctx.fillStyle = 'rgba(176,112,80,0.3)'; ctx.fillRect(px + 40 * s, py + 64 * s, pw - 80 * s, 1.5 * s);
       const notes = [...mem.notlar].reverse();
@@ -210,7 +210,7 @@ export class Ziyaret extends GunBatimi {
       for (let i = start; i < notes.length; i++) {
         const nt = notes[i];
         const d = new Date(nt.t);
-        ctx.fillStyle = '#B07050'; ctx.font = `400 ${15 * s}px ${FONT.mono}`;
+        ctx.fillStyle = '#7A4A30'; ctx.font = `400 ${15 * s}px ${FONT.mono}`;
         ctx.fillText(`${trTarih(d)}  ${trSaat(d)}`, px + 40 * s, y);
         ctx.fillStyle = '#3A2018'; ctx.font = `${20 * s}px ${FONT.piksel}`;
         ctx.fillText(nt.m.length > 90 ? nt.m.slice(0, 88) + '…' : nt.m, px + 40 * s, y + 30 * s);

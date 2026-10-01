@@ -38,6 +38,8 @@ export class Talk {
   private t = 0;
   scale = 1;
   aiPos: 'ust' | 'merkez' = 'ust';
+  /** Parlak sahnelerde yazı arkasına koyu perde (0 kapalı). */
+  scrim = 1;
 
   clear(who?: Who) { for (const l of this.lines) if (!who || l.who === who) l.state = 'soluyor'; }
 
@@ -155,8 +157,20 @@ export class Talk {
     const x0 = W / 2 - blockW / 2;
     const totalH = lines.length * lh;
     const y0 = pos === 'merkez' ? H / 2 - totalH / 2 + sz : pos === 'alt' ? H * 0.8 - totalH + sz : H * 0.12 + sz;
+    ctx.globalAlpha = l.alpha * (l.dim ? 0.5 : 1);
+    if (this.scrim > 0) {
+      const padX = 60 * s, padY = 34 * s;
+      const cx = W / 2, cy = y0 - sz * 0.35 + (lines.length - 1) * lh / 2;
+      const rw = blockW / 2 + padX, rh = totalH / 2 + padY;
+      ctx.save();
+      ctx.translate(cx, cy); ctx.scale(rw, rh);
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
+      g.addColorStop(0, `rgba(12,4,16,${0.42 * this.scrim})`); g.addColorStop(0.6, `rgba(12,4,16,${0.3 * this.scrim})`); g.addColorStop(1, 'rgba(12,4,16,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, 1, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
     ctx.globalAlpha = l.alpha;
-    ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 10 * s; ctx.shadowOffsetY = 2 * s;
+    ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 12 * s; ctx.shadowOffsetY = 2 * s;
     ctx.fillStyle = '#F6EEE6';
     ctx.textAlign = 'left';
     this.drawFresh(ctx, lines, x0, y0, lh, l, 6 * s, 'left');
@@ -203,8 +217,9 @@ export class Talk {
     ctx.globalAlpha = l.alpha;
     ctx.textAlign = 'left';
     // okunurluk için koyu gölge
-    ctx.shadowColor = 'rgba(10,4,12,0.85)'; ctx.shadowBlur = 8 * s; ctx.shadowOffsetY = 2 * s;
+    ctx.shadowColor = 'rgba(10,4,12,0.95)'; ctx.shadowBlur = 10 * s; ctx.shadowOffsetY = 2 * s;
     ctx.fillStyle = '#FFFFFF';
+    ctx.lineWidth = 3 * s; ctx.strokeStyle = 'rgba(14,4,16,0.55)'; ctx.lineJoin = 'round';
     this.drawFresh(ctx, lines, cx, top, lh, l, 8 * s, 'center');
     ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
     if ((l.o.block ?? this.blockDefault) && l.state === 'bekliyor' && !l.dim) this.drawPrompt(ctx, cx + blockW / 2 + 18 * s, top + (lines.length - 1) * lh, s, l.alpha);
