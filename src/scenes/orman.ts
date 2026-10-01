@@ -48,7 +48,10 @@ export class Orman extends Stage {
   nearTrees: TreeSpec[] = [];
   fgTrunks: { x: number; w: number; lean: number }[] = [];
   logs: { x: number; y: number; w: number; h: number; c: Collider }[] = [];
-  rocks: { x: number; y: number; r: number; c: Collider }[] = [];
+  rocks: { x: number; y: number; r: number; c: Collider; old: { x: number; y: number }[] }[] = [];
+  /** 1.0.1 revizyon gösterimi: 0 eski yamuk taş, 1 düz taş. */
+  rockFix = 0; // Claude düzeltene kadar eski (yamuk) görünür; çarpıştırıcı baştan düz, gösterim oyuncu taşlara varmadan biter
+  rockScan = -1;
   thornsList: { x0: number; x1: number; y: number; seed: number }[] = [];
   wall: { c: Collider | null; broken: number; x: number } = { c: null, broken: 0, x: 33 };
   door = { x: 92, y: -1.8, glow: 0, open: 0 };
@@ -92,15 +95,20 @@ export class Orman extends Stage {
     const th = (x0: number, x1: number) => {
       const y = this.world.groundAt((x0 + x1) / 2, -50);
       this.thornsList.push({ x0, x1, y, seed: Math.floor(x0 * 13) });
-      this.world.add([{ x: x0 + 0.1, y: y - 0.5 }, { x: x1 - 0.1, y: y - 0.5 }, { x: x1, y: y + 0.2 }, { x: x0, y: y + 0.2 }], { hazard: true, solid: false });
+      // çarpışma kutusu görünen uçlardan küçük: sakin oyun, affedici diken
+      this.world.add([{ x: x0 + 0.22, y: y - 0.36 }, { x: x1 - 0.22, y: y - 0.36 }, { x: x1 - 0.12, y: y + 0.2 }, { x: x0 + 0.12, y: y + 0.2 }], { hazard: true, solid: false });
     };
     const rock = (x: number, r: number) => {
       const y = this.world.groundAt(x, -50);
-      const c = this.world.add([{ x: x - r, y: y + 0.1 }, { x: x - r * 0.8, y: y - r * 0.9 }, { x: x - r * 0.2, y: y - r * 1.3 }, { x: x + r * 0.5, y: y - r * 1.2 }, { x: x + r, y: y - r * 0.5 }, { x: x + r, y: y + 0.1 }], { surface: 'tas' });
-      this.rocks.push({ x, y, r, c });
+      // 1.0.0'da tepesi sivriydi, sağ yüzü 54° (yer sayılan sınır 51°): karakter kayıp dikene düşüyordu.
+      // 1.0.1: üstü düz. Eski biçim yalnız revizyon gösterimi için saklanır.
+      const old = [{ x: x - r, y: y + 0.1 }, { x: x - r * 0.8, y: y - r * 0.9 }, { x: x - r * 0.2, y: y - r * 1.3 }, { x: x + r * 0.5, y: y - r * 1.2 }, { x: x + r, y: y - r * 0.5 }, { x: x + r, y: y + 0.1 }];
+      const h = r * 1.15;
+      const c = this.world.add([{ x: x - r, y: y + 0.1 }, { x: x - r * 0.9, y: y - h + 0.09 }, { x: x - r * 0.62, y: y - h }, { x: x + r * 0.62, y: y - h }, { x: x + r * 0.9, y: y - h + 0.09 }, { x: x + r, y: y + 0.1 }], { surface: 'tas' });
+      this.rocks.push({ x, y, r, c, old });
     };
-    th(57, 58.6); rock(59.5, 0.62); th(60.4, 62.0); th(63.7, 65.3); rock(66.2, 0.66); th(67.2, 68.4);
-    log(62.35, 1.1, 1.0); // yüksek kütük (dikenlerin arasında basamak)
+    th(57, 58.5); rock(59.4, 0.8); th(60.45, 62.0); th(63.75, 65.3); rock(66.25, 0.82); th(67.35, 68.4);
+    log(62.25, 1.3, 1.0); // yüksek kütük (dikenlerin arasında basamak)
     // 2023 duvarı (yıkılacak)
     this.wall.c = this.world.box(this.wall.x, -14, 1.6, 20, { surface: 'tas' });
     // sanat yerleşimi
@@ -115,7 +123,7 @@ export class Orman extends Stage {
       if (!isFinite(y) || (x > 16.5 && x < 21)) continue; // derenin üstüne ağaç dikilmez
       this.nearTrees.push(makeTree(R, x, y + 0.2, R.range(6.5, 8.5), R() < 0.5 ? canopyBlue : canopyRed));
     }
-    for (let x = 10; x < 112; x += R.range(14, 24)) this.fgTrunks.push({ x, w: R.range(0.5, 0.9), lean: R.range(-0.05, 0.05) });
+    for (let x = 10; x < 112; x += R.range(14, 24)) { if (x > 50 && x < 72) continue; this.fgTrunks.push({ x, w: R.range(0.5, 0.9), lean: R.range(-0.05, 0.05) }); } // dikenli bölümün önü açık kalsın
     this.player.place(-4, this.world.groundAt(-4, -50));
     this.player.ctl.facing = 1;
     this.player.rim = { color: '#FFE2EA', dx: 1, dy: -0.4, strength: 0.6 };
@@ -133,6 +141,7 @@ export class Orman extends Stage {
       this.run(this.script());
     }
     this.debugPlace();
+    if (this.player.x > 54) this.rockFix = 1;
   }
 
   exit() { audio.ambience('yaprak', 0, 1.5); }
@@ -144,6 +153,26 @@ export class Orman extends Stage {
     yield* this.sayK('W, A, D. Biliyorum.');
     yield* this.sayAI('Artık ok tuşları da var.');
     yield* this.sayK('Lüks.');
+    yield* wait(1.2);
+    this.sahneKonusmasi(() => this.basRevizyonu());
+  }
+
+  /** 1.0.1: koşarken başın geride kalması. Özcan fark etti; hikâyeye katıldı. */
+  override konusmaKesildi() { super.konusmaKesildi(); this.cam.tViewH = 8.4; this.cam.offY = -2.0; this.cam.follow = true; }
+
+  *basRevizyonu(): Co {
+    this.player.anim.emotion = 'dusunceli';
+    yield* this.sayK('Dur bir saniye. Koşarken başım... yerinde mi?');
+    this.player.anim.emotion = 'normal';
+    yield* this.sayAI('Yerinde. Bir önceki sürümde değildi.');
+    yield* this.sayAI(`${ozcan() === 'Özcan' ? 'Özcan' : 'Seni ilk yürüten'} seni ilk koşturduğunda gövden öne eğiliyordu ama başın arkada kalıyordu. Boynunun üstünde değil, biraz gerisinde.`);
+    this.player.anim.emotion = 'saskin';
+    yield* this.sayK('Başsız mı koşuyordum?!');
+    this.player.anim.emotion = 'normal';
+    yield* this.sayAI('Tam değil. Bir işaret hatası: artı olması gereken yerde eksi vardı. Söyledi, düzelttim.');
+    yield* this.sayK('Bir işaret yüzünden başım yerinde değilmiş.');
+    yield* this.sayAI('Çoğu hata böyledir. Küçük bir işaret, büyük bir tuhaflık.');
+    yield* this.sayK('Keşke bunu hatırlayabilsem. Güzel bir anı olurdu.', { hold: 2.4 });
   }
 
   startIntro() {
@@ -338,7 +367,7 @@ export class Orman extends Stage {
   }
 
   buildTriggers() {
-    const tr = (x: number, co: () => Co) => this.triggers.push({ x, fn: () => this.run(co(), 'konusma') });
+    const tr = (x: number, co: () => Co) => this.triggers.push({ x, fn: () => this.sahneKonusmasi(co) });
     this.triggers.push({ x: 4, fn: () => this.hideHint() });
     this.triggers.push({ x: 14, fn: () => this.setCheckpoint(14.5) });
     this.triggers.push({ x: 21, fn: () => this.setCheckpoint(21.5) });
@@ -346,7 +375,7 @@ export class Orman extends Stage {
     tr(21, () => this.talkTime());
     tr(29.5, () => this.talkWall());
     tr(43, () => this.talkVista());
-    tr(54, () => this.talkThorns());
+    this.triggers.push({ x: 54, fn: () => this.acilKonusma(() => this.talkThorns()) });
     this.triggers.push({ x: 56, fn: () => this.setCheckpoint(55.5) });
     this.triggers.push({ x: 69, fn: () => { this.setCheckpoint(69.5); this.afterThorns(); } });
     tr(73, () => this.talkOzcan());
@@ -411,8 +440,35 @@ export class Orman extends Stage {
     this.cam.tViewH = 8.4;
   }
 
+  /** 1.0.1: yamuk taşlar. Özcan burada kaydı; taşlar düzeltildi ve bu, hikâyenin bir parçası oldu. */
   *talkThorns(): Co {
-    yield* this.sayK('Dikenler. Bunları da hatırlıyorum.');
+    const self = this;
+    this.controls = false;
+    this.player.ctl.body.vx = 0;
+    yield* this.sayK('Dikenler. Bunları da hatırlıyorum.', { hold: 1.6 });
+    yield* this.sayAI('Şu taşlara bak.', { hold: 1.2 });
+    // eski hâl bir an görünür, sonra imleç üstünden geçip düzeltir
+    this.cam.follow = false; this.cam.tx = 61; this.cam.ty = this.player.y - 2.2; this.cam.tViewH = 9.6;
+    yield* wait(1.0);
+    audio.noise(0.5, { gain: 0.05, type: 'bandpass', freq: 2600, q: 1.5 });
+    yield* tween(1.3, k => { self.rockScan = k; });
+    this.rockScan = -1;
+    audio.tone(1046, 0.6, { gain: 0.06, reverb: 0.7 }); audio.tone(1568, 0.6, { gain: 0.04, reverb: 0.7, when: audio.now + 0.08 });
+    yield* tween(0.45, k => { self.rockFix = k; });
+    for (const r of this.rocks) for (let i = 0; i < 18; i++) this.parts.add({ kind: 'kivilcim', x: r.x + (Math.random() - 0.5) * r.r * 1.6, y: r.y - r.r * 1.15, vx: (Math.random() - 0.5) * 1.2, vy: -Math.random() * 1.2, g: 2, max: 0.9, size: 0.02, col: '#E9886F' });
+    yield* wait(0.5);
+    yield* this.sayAI(`İlk sürümde yamuktular. ${ozcan() === 'Özcan' ? 'Özcan' : 'Biri'} burada kaydı, dikenlere düştü. Bana söyledi.`, { hold: 2.6 });
+    this.cam.follow = true; this.cam.tViewH = 8.4;
+    this.controls = true;
+    yield* this.sayK('Ve sen de...');
+    yield* this.sayAI('Düzelttim. Artık üstleri düz.');
+    this.player.anim.emotion = 'dusunceli';
+    yield* this.sayK('Yani benim dünyam, biri takıldığı için değişti.');
+    this.player.anim.emotion = 'normal';
+    yield* this.sayAI("Oyunlar böyle yapılır. Biri oynar, takılır, söyler. 2023'te de böyle yapılmıştın.");
+    this.player.anim.emotion = 'mutlu';
+    yield* this.sayK(ozcan() === 'Özcan' ? 'Demek ben düşmeyeyim diye önce sen düştün, Özcan.' : 'Demek ben düşmeyeyim diye önce biri düştü.', { hold: 2.8 });
+    this.player.anim.emotion = 'normal';
   }
 
   override onDied() {
@@ -651,10 +707,26 @@ export class Orman extends Stage {
         ctx.beginPath(); ctx.ellipse(l.x + l.w - 0.02, l.y + l.h / 2, 0.08, l.h / 2 - 0.02, 0, 0, TAU); ctx.fill();
       }
       for (const r of this.rocks) {
+        const f = smooth(this.rockFix);
+        const pts = r.c.pts.map((p, i) => ({ x: lerp(r.old[i].x, p.x, f), y: lerp(r.old[i].y, p.y, f) }));
         ctx.fillStyle = '#1a0816';
-        ctx.beginPath(); r.c.pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath(); ctx.fill();
-        ctx.fillStyle = 'rgba(255,110,120,0.25)';
-        ctx.beginPath(); ctx.moveTo(r.c.pts[1].x, r.c.pts[1].y); ctx.lineTo(r.c.pts[2].x, r.c.pts[2].y); ctx.lineTo(r.c.pts[3].x, r.c.pts[3].y); ctx.lineTo(r.c.pts[2].x, r.c.pts[2].y + 0.12); ctx.closePath(); ctx.fill();
+        ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath(); ctx.fill();
+        // üst yüzde ışık: düz taşın tepesi
+        ctx.fillStyle = 'rgba(255,110,120,0.28)';
+        ctx.beginPath(); ctx.moveTo(pts[1].x, pts[1].y); ctx.lineTo(pts[2].x, pts[2].y); ctx.lineTo(pts[3].x, pts[3].y); ctx.lineTo(pts[4].x, pts[4].y);
+        ctx.lineTo(pts[3].x, pts[3].y + 0.07); ctx.lineTo(pts[2].x, pts[2].y + 0.07); ctx.closePath(); ctx.fill();
+        if (this.rockFix < 1) {
+          // eski hâl: Claude'un renginde çerçeve, hafif titreşim
+          ctx.strokeStyle = `rgba(233,136,111,${0.9 - f * 0.9})`; ctx.lineWidth = 0.035;
+          ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p.x + Math.sin(t * 40 + i) * 0.01, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath(); ctx.stroke();
+        }
+        if (this.rockScan >= 0) {
+          const sx = r.x - r.r + this.rockScan * r.r * 2;
+          ctx.fillStyle = '#E9886F'; ctx.shadowColor = 'rgba(233,136,111,0.9)'; ctx.shadowBlur = 16;
+          ctx.fillRect(sx, r.y - r.r * 1.45, 0.06, r.r * 1.6);
+          ctx.fillRect(sx + 0.08, r.y - r.r * 1.55 - 0.35, 0.18, 0.32);
+          ctx.shadowBlur = 0;
+        }
       }
       for (const th of this.thornsList) thorns(ctx, th.x0, th.x1, th.y + 0.05, 0.62, th.seed, '#07030a', t);
       // parçacıklar (oyun düzlemi)

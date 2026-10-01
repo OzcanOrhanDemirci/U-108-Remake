@@ -73,5 +73,10 @@ export const host = {
     (window as any).__kapandi = true;
   },
   openOriginal() { return call('orijinaliAc'); },
+  /** Claude'un kendi hafıza deposunda bu oyun hakkında not var mı? (C:\dev\claude_memory\hafiza\u108) */
+  async claudeHafiza(): Promise<string | null> {
+    if (wv) { const r = await call('claudeHafiza'); return r?.ok ? r.data : null; }
+    return qp.get('claudenotu');
+  },
   fullscreen(on: boolean) { return call('tamEkran', { on }); },
 };

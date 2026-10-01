@@ -4,6 +4,7 @@ import { music, dogusSwell } from './core/music';
 import { loadAll } from './core/assets';
 import { testKarakter } from './scenes/test_karakter';
 import { ikon } from './scenes/ikon';
+import { testKosu } from './scenes/test_kosu';
 import { menu2023, diyalog2023, bolum2023 } from './scenes/eski2023';
 import { orman } from './scenes/orman';
 import { kirilma } from './scenes/kirilma';
@@ -29,6 +30,7 @@ async function boot() {
   audio.init();
   G.register('test-karakter', testKarakter);
   G.register('ikon', ikon);
+  G.register('test-kosu', testKosu);
   G.register('menu2023', menu2023);
   G.register('diyalog2023', diyalog2023);
   G.register('bolum2023', bolum2023);

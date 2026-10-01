@@ -124,6 +124,14 @@ sealed class Pencere : Form
                 case "baslik": Text = m["text"]?.GetValue<string>() ?? Text; break;
                 case "kapat": BeginInvoke(() => Close()); break;
                 case "tamEkran": TamEkran(m["on"]?.GetValue<bool>() ?? true); break;
+                case "claudeHafiza":
+                    {
+                        // Claude'un hafıza deposunda bu oyunun notu (Özcan'ın yerel deposu; yalnız okunur)
+                        var klasor = Path.Combine("C:\\dev", "claude_memory", "hafiza", "u108");
+                        var dosya = Directory.Exists(klasor) ? Directory.GetFiles(klasor, "*.md").OrderBy(f => f).FirstOrDefault() : null;
+                        veri = dosya is null ? null : JsonValue.Create(File.ReadAllText(dosya));
+                        break;
+                    }
                 case "testSonuc":
                     File.WriteAllText(Path.Combine(TestCikti, "sonuc.json"), m["data"]?.ToJsonString() ?? "null");
                     break;

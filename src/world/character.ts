@@ -141,7 +141,8 @@ export function drawCharacter(ctx: Ctx, o: DrawOpts) {
 
   const hipY = L.hipY + P.bob;
   const spread = 0.03 * (1 - turn);
-  const leanX = (y: number) => Math.sin(P.lean) * (hipY - y) * -1;
+  // Gövde kalça etrafında P.lean kadar döner: üstteki bir nokta İLERİ kayar. (1.0.0'da işaret tersti: baş geride kalıyordu.)
+  const leanX = (y: number) => Math.sin(P.lean) * (hipY - y);
   const shY = L.shoulderY + P.bob;
   // omuzlar: 3/4'te yakın omuz arkada (x<0), uzak omuz önde (x>0)
   const nearShX = lerp(-0.074, -0.04, turn) + leanX(shY), farShX = lerp(0.074, 0.05, turn) + leanX(shY);

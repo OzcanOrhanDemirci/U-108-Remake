@@ -1,6 +1,7 @@
 // Karakterin hafızası: %APPDATA%\U-108\hafiza.json (kabukta) ya da localStorage (tarayıcıda).
 // Hikâyede "hafıza hediyesi" verilene kadar karakter hatırlamaz; oyun yalnız kaldığı yeri tutar.
 import { host } from './host';
+import { SURUM } from '../story/surum';
 
 export interface Not { t: string; m: string }
 export interface Memory {
@@ -22,11 +23,12 @@ export interface Memory {
   oyunda: boolean;           // şu an oyunun içinde mi (kapanış tespiti için)
   orijinalVardi: boolean;
   ziyaretSayisi: number;
+  oyunSurumu: string | null; // hafızanın son gördüğü oyun sürümü
 }
 
 const empty = (): Memory => ({
   surum: 1, ilkAcilis: null, acilislar: 0, sonAcilis: null, oncekiAcilis: null, ilerleme: 'menu2023', bitti: false, bitisSayisi: 0,
-  ad: null, cumle: null, hafizaVerildi: false, notlar: [], ziyaretSirasi: 0, olumler: 0, yarida: false, oyunda: false, orijinalVardi: false, ziyaretSayisi: 0,
+  ad: null, cumle: null, hafizaVerildi: false, notlar: [], ziyaretSirasi: 0, olumler: 0, yarida: false, oyunda: false, orijinalVardi: false, ziyaretSayisi: 0, oyunSurumu: null,
 });
 
 export const mem: Memory = empty();
@@ -37,8 +39,11 @@ export async function loadMemory() {
   const raw = await host.readMemory();
   if (raw) {
     try { Object.assign(mem, empty(), JSON.parse(raw)); } catch { /* bozuk dosya: baştan */ }
+  } else {
+    mem.oyunSurumu = SURUM; // yeni oyuncu: değişiklik fark edilecek bir geçmiş yok
   }
   // test kipleri
+  if (qp.has('eskisurum')) mem.oyunSurumu = null; // test: güncellemeden önceki hafıza
   if (qp.has('bitmis')) { mem.bitti = true; mem.hafizaVerildi = true; mem.ad = mem.ad ?? 'Yüzsekiz'; }
   mem.yarida = mem.oyunda && !mem.bitti; // önceki oturum oyunun ortasında kapandı
   mem.oncekiAcilis = mem.sonAcilis;

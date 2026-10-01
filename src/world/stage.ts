@@ -202,6 +202,30 @@ export abstract class Stage implements Scene {
 
   run(co: Co, tag?: string) { G.runner.start(co, tag); }
 
+  /** Tetiklenen konuşmalar sıraya girer: biri bitmeden öbürü başlamaz. */
+  private kuyruk: (() => Co)[] = [];
+  private kuyrukCalisiyor = false;
+  sahneKonusmasi(f: () => Co) {
+    this.kuyruk.push(f);
+    if (!this.kuyrukCalisiyor) this.run(this.kuyrukIsle(), 'konusma');
+  }
+  /** Yere bağlı konuşma: süren konuşmayı keser, hemen başlar. */
+  acilKonusma(f: () => Co) {
+    G.runner.stop('konusma');
+    this.kuyruk = [];
+    this.kuyrukCalisiyor = false;
+    this.talk.clear();
+    this.konusmaKesildi();
+    this.sahneKonusmasi(f);
+  }
+  /** Kesilen konuşmanın bıraktığı kamera/şerit durumunu toparlar (sahne özelleştirir). */
+  konusmaKesildi() { this.letterboxT = 0; this.player.camLook = 0; this.player.anim.emotion = 'normal'; this.player.anim.wave = 0; this.controls = true; }
+  private *kuyrukIsle(): Co {
+    this.kuyrukCalisiyor = true;
+    while (this.kuyruk.length) { const f = this.kuyruk.shift()!; yield* f(); }
+    this.kuyrukCalisiyor = false;
+  }
+
   /** Geliştirme: ?x=40 ile oyuncuyu oraya koy, ?sessiz=1 ile senaryoyu atla. */
   debugPlace() {
     (window as any).__stage = this;

@@ -42,6 +42,14 @@ export function* race(...cos: Co[]): Co {
   }
 }
 
+/** Bir sözü (Promise) bekler; sonucu döner. */
+export function* bekle<T>(p: Promise<T>): Generator<unknown, T, number> {
+  let done = false, val!: T;
+  p.then(v => { val = v; done = true }, () => { done = true; });
+  while (!done) yield;
+  return val;
+}
+
 export class Runner {
   private list: { co: Co; tag?: string }[] = [];
   start(co: Co, tag?: string) {

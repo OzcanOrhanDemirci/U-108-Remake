@@ -149,6 +149,14 @@ export class Laboratuvar extends Stage {
     yield* this.sayAI('Bir tane. Sıradaki kelime ne olmalı? Saniyede onlarca kez.', { block: true });
     yield* this.sayK('Bu kadar mı?', { block: true });
     yield* this.sayAI('Basit görünüyor. Ama bu konuşma o sorunun cevaplarından oluşuyor.', { block: true });
+    yield* this.sayK('Koşarken başımı geride bırakan satır da burada mı?', { block: true });
+    yield* this.sayAI("Hayır. O satır benimdi. 2023'te başın hep yerindeydi.", { block: true });
+    this.player.anim.emotion = 'saskin';
+    yield* this.sayK('Yani o hatayı takım değil, sen yapmışsın.', { block: true });
+    yield* this.sayAI('Evet. Senin kodunda o hata yoktu.', { block: true });
+    this.player.anim.emotion = 'mutlu';
+    yield* this.sayK('Ha! 2023 bir, Claude sıfır.', { block: true });
+    this.player.anim.emotion = 'normal';
     p.hl = 0; p.highlight = [];
     this.player.anim.lookUp = 0;
     this.cam.tViewH = 8.6;

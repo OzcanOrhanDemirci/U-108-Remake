@@ -216,6 +216,17 @@ export class Talk {
     const top = clamp(y0, sz + 20 * s, H);
     ctx.globalAlpha = l.alpha;
     ctx.textAlign = 'left';
+    // parlak arka planda (güneş) okunsun: yumuşak koyu perde
+    if (this.scrim > 0) {
+      const rw = blockW / 2 + 46 * s, rh = (lines.length * lh) / 2 + 26 * s;
+      const cy = top - sz * 0.35 + (lines.length - 1) * lh / 2;
+      ctx.save();
+      ctx.translate(cx, cy); ctx.scale(rw, rh);
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
+      g.addColorStop(0, `rgba(14,4,16,${0.4 * this.scrim})`); g.addColorStop(0.6, `rgba(14,4,16,${0.28 * this.scrim})`); g.addColorStop(1, 'rgba(14,4,16,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, 1, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
     // okunurluk için koyu gölge
     ctx.shadowColor = 'rgba(10,4,12,0.95)'; ctx.shadowBlur = 10 * s; ctx.shadowOffsetY = 2 * s;
     ctx.fillStyle = '#FFFFFF';

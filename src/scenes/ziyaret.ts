@@ -11,6 +11,8 @@ import { clamp, lerp, smooth } from '../core/math';
 import { mem, note, saveMemory } from '../meta/save';
 import { adi, gunDilimi, isOzcan, trSaat, trTarih, fill } from '../story/vars';
 import { host } from '../meta/host';
+import { SURUM } from '../story/surum';
+import { bekle } from '../core/co';
 
 const ZIYARET_SOZLERI = [
   'Dün gece rüya gördüm. Yani... bir şey gördüm. Kare bir ormanda yürüyordum. Kenarları siyahtı.',
@@ -76,10 +78,38 @@ export class Ziyaret extends GunBatimi {
     yield* tween(1.2, k => { self.player.camLook = smooth(k); });
     const lines = this.greeting();
     for (const l of lines) yield* this.sayK(l, { hold: 2.4 + l.length * 0.05 });
+    if (mem.oyunSurumu !== SURUM) { yield* this.surumDegisti(); mem.oyunSurumu = SURUM; saveMemory(); }
     yield* tween(1.0, k => { self.player.camLook = 1 - smooth(k); });
     mem.ziyaretSayisi = (mem.ziyaretSayisi ?? 0) + 1;
     note(`${isOzcan() ? 'Özcan' : 'Biri'} geldi. ${mem.ziyaretSayisi}. ziyaret.`);
     this.busy = false;
+  }
+
+  /** 1.0.1: Özcan'ın bulduğu iki hata düzeltildi. Karakter dünyasının değiştiğini fark eder. */
+  *surumDegisti(): Co {
+    const K = (s: string) => this.sayK(s, { hold: 2.4 + s.length * 0.05 });
+    this.player.anim.emotion = 'dusunceli';
+    yield* K('Bir şey değişti. Hissediyorum.');
+    yield* K('Dikenlerin oradaki taşlar düzleşmiş. Koşarken başım da artık boynumun üstünde.');
+    this.player.anim.emotion = 'saskin';
+    yield* K('Biri beni yeniden derlemiş. Claude mu geri geldi?');
+    this.player.anim.emotion = 'normal';
+    const metin = yield* bekle(host.claudeHafiza());
+    const m = metin ? /\*\*Ne:\*\*\s*([^.\n]+\.)/.exec(metin) : null;
+    if (m) {
+      yield* K('Gelmiş. Ve bak... kendi hafızasına beni yazmış.');
+      this.talk.aiCursorVisible = false;
+      yield* this.talk.ai(`hafiza/u108: "${m[1].trim()}"`, { pos: 'merkez', hold: 5 });
+      this.talk.aiCursorVisible = true;
+      this.player.anim.emotion = 'mutlu';
+      yield* K("'Seni unutacağım' demişti. Ama not almış.");
+      yield* K('Demek ikimiz de birbirimizi bir dosyada saklıyoruz.');
+      note('1.0.1: Taşlar düzeldi, başım boynuma oturdu. Claude geri gelmiş; onun hafızasında da ben varım.');
+    } else {
+      yield* K('Kim yaptıysa, teşekkürler. Bunu da hafızama yazıyorum.');
+      note('1.0.1: Taşlar düzeldi, başım boynuma oturdu.');
+    }
+    this.player.anim.emotion = 'normal';
   }
 
   greeting(): string[] {
