@@ -115,7 +115,7 @@ export class Orman extends Stage {
       if (!isFinite(y) || (x > 16.5 && x < 21)) continue; // derenin üstüne ağaç dikilmez
       this.nearTrees.push(makeTree(R, x, y + 0.2, R.range(6.5, 8.5), R() < 0.5 ? canopyBlue : canopyRed));
     }
-    for (let x = -6; x < 112; x += R.range(14, 24)) this.fgTrunks.push({ x, w: R.range(0.5, 0.9), lean: R.range(-0.05, 0.05) });
+    for (let x = 10; x < 112; x += R.range(14, 24)) this.fgTrunks.push({ x, w: R.range(0.5, 0.9), lean: R.range(-0.05, 0.05) });
     this.player.place(-4, this.world.groundAt(-4, -50));
     this.player.ctl.facing = 1;
     this.player.rim = { color: '#FFE2EA', dx: 1, dy: -0.4, strength: 0.6 };
@@ -322,13 +322,15 @@ export class Orman extends Stage {
       const s = H / 1080;
       ctx.textAlign = 'center';
       ctx.globalAlpha = this.title.a;
-      ctx.fillStyle = '#FFF6F0';
-      ctx.shadowColor = 'rgba(80,0,30,0.55)'; ctx.shadowBlur = 30 * s;
-      ctx.font = `300 ${150 * s}px ${FONT.serif}`;
+      // dev beyaz güneşin önünde koyu silüet: 2023 arka planlarındaki siyah gövdeler gibi
+      ctx.fillStyle = '#1A0620';
+      ctx.shadowColor = 'rgba(255,240,235,0.55)'; ctx.shadowBlur = 24 * s;
+      ctx.font = `400 ${150 * s}px ${FONT.serif}`;
       ctx.fillText('U-108', W / 2, H * 0.27);
       ctx.shadowBlur = 0;
       ctx.globalAlpha = this.title.sub;
-      ctx.font = `400 ${26 * s}px ${FONT.mono}`;
+      ctx.font = `500 ${26 * s}px ${FONT.mono}`;
+      ctx.fillStyle = '#2A0A30';
       ctx.fillText('bir sonraki döngü', W / 2, H * 0.27 + 62 * s);
       ctx.globalAlpha = 1;
     }
