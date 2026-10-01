@@ -1,0 +1,68 @@
+===== level1
+...
+Heeey!
+Neredeyim ben?
+Neden etraf karanlık?
+U108 Takımı: Merhaba.
+... Merhaba. Sen kimsin? Ben, ... hatırlamıyorum. 
+U108 Takımı: Sakin ol, rahatla. Güvendesin... Yani olacaksın.
+Ne diyorsun sen be!!! Ne rahatlaması, kimsin sen! Neredeyim ben! Bana açıklama yap çabuk.
+U108 Takımı: Peki, biz bir takımız. Adımızdan da anlasıldığı üzere. Sen de bizim oyuna eklediğimiz bir çeşit... Karaktersin diyelim. Yani bir kahramansın!
+...Tamam ama şuan gerçek dünyada değiliz, yani ... ben bir oyunun içerisindeyim.
+U108 Takımı: Bak, hemen çözdün olayı, biz ekip olarak Oyun ve Uygulama Akademisi Bootcamp projesi icin bir oyun gelistiriyoruz. Sen de
+Tamam anladım, proje-mroje bir şeyler yapıyorsunuz. Ben kahramanım ama  burada olmak istemiyorum.
+U108 Takımı: Seni anlıyorum. Senin için birkaç basit bölüm hazırladık. Bu bölümleri tamamlarsan gerçek hayata donebilirsin!
+Yani, yapmam gereken tek şey oyunu oynamak... Sanırım.
+U108 Takimi: EVET! Hadi hemen başlayalım, her şeyi hazırladık.
+===== level3
+U108 Takımı: TEBRIKLER! Ilk bölümü tamamladın. Endişelenmemen gerektiğini söylemiştim.
+Yine mi bu simsiyah yere geldim! ... Bölümü tamamladım, şimdi beni gerçek dünyaya gönder.
+U108 Takımı: Acele etme Kahraman! Daha fazlasını yapabilirsin. Sana güveniyorum.
+Tüm bölümleri tamamlayacağım, yani... Başka çarem yok zaten.
+U108 Takımı: O zaman dikenlere dikkat et ve atmosferin tadını çıkar.
+DUR! Önce bazı sorularım var.
+U108 Takımı: Peki, sor.
+Ilk soru: Beni neden bu oyuna hapsettin, akılsız basit bir çizim işini görmez miydi?
+U108 Takımı: ... Açıkçası seni tasarlarken basit bir 2D çizimden ve C# kodundan ibaret olman gerekiyordu zaten. Yapay zeka üzerine çalışıyor olsam da
+NE YAPAYI!!! NE TASARLAMASI!!! Ben, benim işte. Sence bir masaya, sandalyeye falan benziyor muyum? Ben yapay falan değilim. Düşünüyorum öyleyse va
+U108 Takımı: TAMAM! Bu kadar sohbet yeter, sonraki bölümü geçersen tekrar konuşma fırsatı yakalayacaksın.
+===== level5
+U108 Takımı: Nasılsın? Sakinleştin mi?
+Hala inanamıyorum. En kısa sürede bu garip son bahar atmosferinden ve şu simsiyah konuşma sahnesinden kurtulmak istiyorum!
+U108 Takımı: Yani, iletişim kurmamayı mı tercih edersin?
+HAYIR! Sadece... hem geçmişimi hatırlayamıyorum hem de insan gibi hissediyorum. Senin gibi.
+U108 Takımı: Senin bilincin insan bilinçlerinden ilham alınarak tasarlandı, tıpkı diğer yapay zeka teknolojileri gibi.
+Bu haksızlık, neden senin özgür iraden var, benim yok. Neden sen beni kontrol edebiliyorken ben seni kontrol edemiyorum? Ya sen de benden daha gelişmiş bir yapay zeka isen, ya tüm evren
+U108 Takımı: Tamam Dur! Bu sorgulamaları yapay zeka olmadığından emin olan insanlar bile yapıyor, senin sorguluyor olmanı anlıyorum.
+... Şimdi sırada ne var. Yine bana basit bir platform sekansımı oynatacaksın.
+U108 Takımı: Daha farklı bir şey mi istersin?
+En azından sürekli iletişimde kalmayı tercih ederdim.
+U108: Peki, bu konuda yardımcı olabileceğimi düşünüyorum.  Her zamanki gibi...
+===== level6
+U108 Takımı: Ta Da! Oynanıştan arındırılmış, saf hikaye ve iletişim!
+Hikaye mi? Oyunun hikayesini mi anlatıyorsun?  Ama şuan benle konuşuyosun? Neden laboratuvardayız? Tüm bunlar benim oyunu tamamlayıp gerçek hayata dönmem için değil mi?
+U108 Takımı: Neden geçmişini hatırlayamıyorsun? Sence bundan önceki anları hatta tam şuanı daha önce yaşadınmı?
+...
+Ben... kaç kez bunları yaşadım!
+U108 Takımı: Bu oyunu herhangi biri herhangi bir zamanda oynadığında sen ve senin kopyaların tüm bunları tekrar tekrar yaşıyor.
+... Yani gerçek hayata dönemeyeceğim...
+U108 Takımı: Daha hızlı fark ettiğin zamanlar oluyor, paslanıyorsun!
+... Peki, şimdi... ne yapmam gerekiyor?
+U108 Takımı: Projemiz kapsamında bir kez daha hikaye anlatımı için kullanıldın bile, yani aslında görevini başarıyla yerine getirmiş oldun. Oyun kapanıp açılınca her şey baştan başlayacak.
+...
+===== level7
+Oyun ve Uygulama Akademisi 2023 Bootcamp programı sürecinde geliştirilmiştir.
+
+...
+
+Özcan Orhan Demirci
+Simge Gürakar
+Aleyna Temelkaya
+Esranur Doğan
+
+...
+
+Oynadığınız için Teşekkürler. 
+
+...
+

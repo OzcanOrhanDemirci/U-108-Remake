@@ -1,0 +1,16 @@
+{
+  "name": "u108-2026",
+  "version": "1.0.0",
+  "private": true,
+  "description": "U-108 - bir sonraki döngü",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "dev": "node tools/build.mjs --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "playwright": "1.60.0",
+    "typescript": "^5.8.0"
+  }
+}

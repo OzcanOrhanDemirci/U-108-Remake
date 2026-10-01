@@ -1,0 +1,7 @@
+node_modules/
+shots/
+dist/
+host/bin/
+host/obj/
+public/game.js
+public/game.js.map
