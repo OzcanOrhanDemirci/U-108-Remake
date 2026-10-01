@@ -1,8 +1,13 @@
 {
-  "name": "u108-2026",
-  "version": "1.0.0",
+  "name": "u-108-remake",
+  "version": "1.0.2",
   "private": true,
-  "description": "U-108 - bir sonraki döngü",
+  "description": "U-108 Remake · bir sonraki döngü. A first game from 2023, rebuilt without an engine.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OzcanOrhanDemirci/U-108-Remake.git"
+  },
   "scripts": {
     "build": "node tools/build.mjs",
     "dev": "node tools/build.mjs --watch",

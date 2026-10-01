@@ -5,7 +5,9 @@
 ## Ne
 Özcan'ın 2023 Oyun ve Uygulama Akademisi Bootcamp'inde (4 kişilik U-108 takımı, Unity) yaptığı ilk oyunun
 ("Bootcamp Projesinden Kaçış") 2026 yeniden yapımı. Kendi kodumuz: TypeScript + WebGL2 (motor yok) + .NET 10 WebView2 kabuğu.
-Orijinal klasör `C:\Users\ozcan\Desktop\U-108` **yalnız okunur**. GitHub'a gitmez.
+Orijinal klasör `C:\Users\ozcan\Desktop\U-108` **yalnız okunur**.
+GitHub: `OzcanOrhanDemirci/U-108-Remake`, **özel** (2026-10-02). Herkese açık yapmak yalnız Özcan'ın onayıyla.
+Vitrin: `README.md` (İngilizce) + `README.tr.md`, görseller `docs/images` (`tools/senaryolar/vitrin*.mjs`, `yakin.mjs` ile çekildi).
 
 ## Çalıştırma
 - Oyuncu: masaüstündeki **`U-108 (2026)`** kısayolu → `dist\U-108.exe` (tam ekran; F11 pencere, Esc duraklat).
