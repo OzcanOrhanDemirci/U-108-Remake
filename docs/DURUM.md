@@ -6,7 +6,8 @@
 Özcan'ın 2023 Oyun ve Uygulama Akademisi Bootcamp'inde (4 kişilik U-108 takımı, Unity) yaptığı ilk oyunun
 ("Bootcamp Projesinden Kaçış") 2026 yeniden yapımı. Kendi kodumuz: TypeScript + WebGL2 (motor yok) + .NET 10 WebView2 kabuğu.
 Orijinal klasör `C:\Users\ozcan\Desktop\U-108` **yalnız okunur**.
-GitHub: `OzcanOrhanDemirci/U-108-Remake`, **özel** (2026-10-02). Herkese açık yapmak yalnız Özcan'ın onayıyla.
+GitHub: `OzcanOrhanDemirci/U-108-Remake`, **public** (2026-10-02, Özcan'ın onayıyla). `main` kural setli: PR + yeşil CI,
+doğrudan ve zorla push yok, doğrusal geçmiş (Hava'daki gibi). Sürüm: `v*` etiketi → release.yml.
 Vitrin: `README.md` (İngilizce) + `README.tr.md`, görseller `docs/images` (`tools/senaryolar/vitrin*.mjs`, `yakin.mjs` ile çekildi).
 
 ## Çalıştırma
@@ -63,6 +64,19 @@ Doğrulanmadı (Özcan'da):
   olan ikisini sırayla duyar. 1.0.2'de karakter hatayı Claude'un yazdığını, Özcan'ın bulduğunu söyler; iki piyanoyu bir kez,
   kısık, kendisi duyurur ve elini uzatıp susturur. Test: `?eskisurum=1.0.1` (o sürüm) ya da `?eskisurum=1` (sürümsüz hafıza).
 - `?sifirla=1` artık yeni oyuncu gibi sıfırlar (sürüm yazılı), eski hafızayı taklit etmez.
+
+## Public sürüm (2026-10-02)
+- **Müzik:** 2023'ün `ArkaPlanSesi.mp3` dosyasının kaynağı bilinmiyor (künyesinde video sitesinden indirilmiş ses izi:
+  DASH + ffmpeg). Public'te yok. Yerine `tools/muzik/beste.py`: aynı ton, nefes, biçim, uzunluk ve düzeyde yeni parça
+  (Salamander Grand Piano, CC BY 3.0). Özcan kulağıyla onayladı. Ölçüm: tempo 72, 8 sn pencerelerde 2023'e 2 dB
+  içinde, tık yok, partisyonda sürtünme yok; betik onaylanan dosyayı birebir üretir (PCM farkı 0).
+- **2023 kaydı yalnız bu bilgisayarda:** `yerel/assets/audio` (gitignore). `node tools/paketle.mjs` (kişisel paket,
+  masaüstü kısayolu) onu kullanır; `--tam` (yayın) asla.
+- **Geçmiş temizliği:** eski müzik blob'ları bütün geçmişte yeni parçayla değiştirildi (git-filter-repo, tarihler
+  korundu). Eski blob'lar GitHub'da erişilebilir kalmasın diye özel depo `U-108-Remake-eski` adıyla kenara alındı,
+  temiz geçmiş yeni depoya gönderildi. Yedek: geçmişten önceki tam bundle (oturum karalama klasörü, kalıcı değil).
+- **Tanıtım sesi** Özcan'ın kendi sesi (18.07.2023 06:51, build'den bir dakika sonra, Windows Ses Kaydedicisi).
+- Public altyapı Hava/Checklist ile aynı düzende: CI, release, CONTRIBUTING, SECURITY, CoC, şablonlar, dependabot.
 
 ## Açık / sonraki
 - Özcan oynayınca: his, ses, metin tonu geri bildirimi → düzeltme turu.
