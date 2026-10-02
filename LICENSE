@@ -22,3 +22,7 @@ SOFTWARE.
 
 The typefaces in public/assets/fonts are not covered by this licence; each is
 used under its own terms, listed in public/assets/fonts/licenses.
+
+The piano recordings public/assets/audio/piyano.ogg and piyano_2023.ogg are
+rendered by tools/muzik/beste.py from the Salamander Grand Piano samples by
+Alexander Holm, used under CC BY 3.0 (creativecommons.org/licenses/by/3.0).

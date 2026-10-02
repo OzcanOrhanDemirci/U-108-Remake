@@ -1,5 +1,8 @@
 """Orijinal 2023 klasöründen (yalnız okunur) oyunun kullandığı varlıkları üretir.
-Kaynak: C:/Users/ozcan/Desktop/U-108 (dokunulmaz). Çıktı: public/assets/2023 ve public/assets/audio."""
+Kaynak: C:/Users/ozcan/Desktop/U-108 (dokunulmaz). Çıktı: public/assets/2023 ve public/assets/audio.
+2023 arka plan müziğinin (ArkaPlanSesi.mp3) kaynağı bilinmiyor; depoya ve yayın paketine girmez. Yalnız gitignore'lu
+yerel/assets/audio klasörüne yazılır ve tools/paketle.mjs onu yalnız bu bilgisayardaki kişisel pakete koyar.
+Depodaki piyano.ogg ve piyano_2023.ogg, yerine yazılan yeni parçadır: tools/muzik."""
 import os, subprocess
 from PIL import Image
 import numpy as np
@@ -7,6 +10,8 @@ import numpy as np
 SRC = r"C:/Users/ozcan/Desktop/U-108"
 OUT = os.path.join(os.path.dirname(__file__), "..", "public", "assets")
 O23 = os.path.join(OUT, "2023"); OAU = os.path.join(OUT, "audio")
+YEREL = os.path.join(os.path.dirname(__file__), "..", "yerel", "assets", "audio")
+os.makedirs(YEREL, exist_ok=True)
 os.makedirs(O23, exist_ok=True); os.makedirs(OAU, exist_ok=True)
 A = os.path.join(SRC, "Assets")
 
@@ -47,8 +52,8 @@ def ff(*args):
     subprocess.run(["ffmpeg", "-v", "error", "-y", *args], check=True)
 
 pia = os.path.join(A, "ArkaPlanSesi.mp3")
-ff("-i", pia, "-c:a", "libvorbis", "-q:a", "6", os.path.join(OAU, "piyano_2023.ogg"))
-ff("-ss", "0.9", "-to", "201.0", "-i", pia, "-af", "afade=t=out:st=197.5:d=2.6", "-c:a", "libvorbis", "-q:a", "7", os.path.join(OAU, "piyano.ogg"))
+ff("-i", pia, "-c:a", "libvorbis", "-q:a", "6", os.path.join(YEREL, "piyano_2023.ogg"))
+ff("-ss", "0.9", "-to", "201.0", "-i", pia, "-af", "afade=t=out:st=197.5:d=2.6", "-c:a", "libvorbis", "-q:a", "7", os.path.join(YEREL, "piyano.ogg"))
 ses = os.path.join(SRC, "U-108 Oyun Tanıtımı - Ses.m4a")
 for name, a, b in [("ses_merhaba", 1.55, 7.45), ("ses_proje", 8.30, 13.20), ("ses_bilinc", 13.70, 23.95),
                    ("ses_piyano", 24.40, 32.50), ("ses_tasarim", 45.05, 54.40), ("ses_tesekkur", 54.30, 58.75)]:
