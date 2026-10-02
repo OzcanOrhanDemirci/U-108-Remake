@@ -29,7 +29,11 @@ await new Promise(r => server.listen(0, r));
 const port = server.address().port;
 
 const W = +(args.w || 1920), H = +(args.h || 1080);
-const browser = await chromium.launch({ headless: true, args: ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--autoplay-policy=no-user-gesture-required'] });
+// GPU'suz makinede (CI koşucusu) WebGL2 için yazılım çizicisi ve sahte ses çıkışı: U108_YAZILIM=1.
+// Ses aygıtı olmayan makinede de AudioContext saati ilerlesin diye ses çıkışı sahteye bağlanır.
+const yazilim = process.env.U108_YAZILIM === '1';
+const cizici = yazilim ? ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--disable-audio-output'] : ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist'];
+const browser = await chromium.launch({ headless: true, args: [...cizici, '--autoplay-policy=no-user-gesture-required'] });
 const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
 const logs = [];
 page.on('console', m => logs.push(`[${m.type()}] ${m.text()}`));
@@ -68,5 +72,7 @@ if (args.script) {
   await ctx.shot(out);
 }
 if (logs.length) console.log(logs.slice(-30).join('\n'));
+// Sayfada yakalanmamış bir hata olduysa kareler yine kaydedilir ama çıkış kodu 1 olur: testler ve CI bunu görsün.
+if (logs.some((l) => l.startsWith('[pageerror]'))) process.exitCode = 1;
 await browser.close();
 server.close();

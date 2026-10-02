@@ -5,3 +5,7 @@ host/bin/
 host/obj/
 public/game.js
 public/game.js.map
+yerel/
+
+# müzik aracının indirdiği piyano örnekleri (CC BY 3.0, her seferinde kaynağından alınır)
+tools/muzik/.ornekler/

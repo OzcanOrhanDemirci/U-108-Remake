@@ -1,0 +1,62 @@
+name: Proposal
+description: Something the game, its build or its documentation could do better
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Proposals are welcome. This is a finished story, so the ones most likely to
+        be taken up are about how it runs, how it is built, how it reads and who
+        can play it: performance, packaging, accessibility, documentation.
+
+        The story, the dialogue and the 2023 parts are the author's, and stay as
+        they are. If your idea touches them, say so; it will be read, but it is a
+        conversation rather than a change.
+
+        Turkish or English are both fine. Put anything that spoils the story inside
+        a `<details>` block.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: >
+        What is difficult, slow or impossible today. Describe the situation rather
+        than the feature; the feature is the answer, and there may be a better one.
+      placeholder: >
+        On a laptop with integrated graphics the forest drops to about 30 frames
+        per second when the fog is on screen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you would like instead
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What else you considered
+      description: Including doing nothing.
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Constraints this project holds to
+      description: >
+        These are settled decisions rather than preferences. A proposal that needs
+        one of them lifted needs to say why it is worth it.
+      options:
+        - label: This does not need a game engine or a runtime dependency
+        - label: This does not need a network connection
+        - label: This keeps the game in Turkish
+        - label: This leaves the 2023 parts exactly as they were
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+      description: A sketch, a screenshot, a link.

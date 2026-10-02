@@ -27,4 +27,5 @@ export default async function ({ page, advance, shot, out }, args) {
   await shot(o('5_2023'));
   const tek = son.length === 1 && son[0] === 'piyano2023';
   console.log(tek ? 'SONUÇ: TEK PİYANO (geçti)' : 'SONUÇ: KARIŞIK (' + son.length + ' kayıt)');
+  if (!tek) process.exitCode = 1; // CI bu testle kırmızıya dönebilsin
 }

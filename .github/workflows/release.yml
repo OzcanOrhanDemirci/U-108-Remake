@@ -1,0 +1,85 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Build and publish
+    runs-on: windows-latest
+    timeout-minutes: 30
+    # Only this job writes, and only to create the release.
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Install the build tools
+        run: npm ci
+
+      # The tag is what people quote, and the version inside the game is what a
+      # returning player's memory is compared against. A release where they
+      # disagree is worse than no release, so the pipeline refuses to publish one.
+      # The notes come out of the changelog, written for this version by hand,
+      # and a version nobody wrote up there is not published at all.
+      - name: Check the tag against every declared version, take the notes
+        run: node tools/surum-denetle.mjs "${{ github.ref_name }}" --notlar notes.md
+
+      - name: Type-check the game
+        run: npm run typecheck
+
+      - name: Set up .NET 10
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "10.0.x"
+
+      # Self-contained: the .NET runtime is inside U-108.exe, so a player needs
+      # nothing installed but Windows. Built only from what is in the repository.
+      - name: Build the package
+        run: node tools/paketle.mjs --tam
+
+      - name: Add download notes
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          zip="U-108-Remake-$version-win-x64.zip"
+          sum=$(cut -d' ' -f1 "dist/$zip.sha256")
+          {
+            echo
+            echo "### Download"
+            echo
+            echo "\`$zip\`: unzip it and run \`U-108.exe\`, keeping the \`oyun\` folder beside it."
+            echo "Windows 10 or 11, x64. The game needs the WebView2 Runtime, which is built into Windows 11."
+            echo
+            echo "The executable is not code-signed, so Windows SmartScreen may ask before the first launch."
+            echo "This package was built by the [release workflow]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID) from the tagged source."
+            echo
+            echo "SHA-256: \`$sum\`"
+          } >> notes.md
+          cat notes.md
+
+      - name: Publish the release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          zip="dist/U-108-Remake-$version-win-x64.zip"
+          gh release create "$GITHUB_REF_NAME" "$zip" "$zip.sha256" \
+            --title "U-108 Remake $version" \
+            --notes-file notes.md \
+            --verify-tag \
+            --latest

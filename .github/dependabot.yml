@@ -1,0 +1,57 @@
+# Keeps the build tools, the shell's one package and the workflow actions current.
+#
+# Monthly and grouped, so that a month of small bumps arrives as one pull request
+# per ecosystem rather than a dozen. A pull request nobody reads is not
+# maintenance, and a queue of them trains you to merge without looking.
+#
+# Every update still has to pass the pipeline, including the scenes in a browser,
+# which is the point: the value is not in the bump, it is in finding out that the
+# bump breaks the game while the change is still one line.
+version: 2
+
+updates:
+  # esbuild, TypeScript and Playwright: development only, nothing ships with the game.
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: monthly
+      timezone: Europe/Istanbul
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+    commit-message:
+      prefix: build
+      include: scope
+    groups:
+      build-tools:
+        patterns:
+          - "*"
+
+  # Microsoft.Web.WebView2, the only package the shell uses.
+  - package-ecosystem: nuget
+    directory: "/host"
+    schedule:
+      interval: monthly
+      timezone: Europe/Istanbul
+    open-pull-requests-limit: 2
+    labels:
+      - dependencies
+    commit-message:
+      prefix: build
+      include: scope
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
+      timezone: Europe/Istanbul
+    open-pull-requests-limit: 2
+    labels:
+      - dependencies
+    commit-message:
+      prefix: ci
+      include: scope
+    groups:
+      actions:
+        patterns:
+          - "*"

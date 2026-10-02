@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security problem
+    url: https://github.com/OzcanOrhanDemirci/U-108-Remake/security/advisories/new
+    about: >
+      Report privately. Please do not describe a vulnerability in a public issue.
+  - name: The 2023 original
+    url: https://github.com/OzcanOrhanDemirci/U-108
+    about: >
+      Bootcamp Projesinden Kaçış, the Unity game this remake comes from, with the
+      team, the sprint notes and the 2023 assets.
+  - name: How this repository is worked in
+    url: https://github.com/OzcanOrhanDemirci/U-108-Remake/blob/main/CONTRIBUTING.md
+    about: What a change looks like, how it is verified, and what stays as it is.

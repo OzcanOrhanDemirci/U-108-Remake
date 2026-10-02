@@ -1,0 +1,18 @@
+# What is stored: text with LF, whatever the machine that committed it prefers.
+# The index already holds LF everywhere; this keeps it that way for every checkout.
+* text=auto eol=lf
+
+# The game's assets are binary. Git must not try to diff them or touch their line endings.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.ico   binary
+*.ogg   binary
+*.mp3   binary
+*.m4a   binary
+*.ttf   binary
+*.otf   binary
+*.zip   binary
+
+# Generated, and noise in a pull request.
+package-lock.json linguist-generated=true

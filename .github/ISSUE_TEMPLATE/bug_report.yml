@@ -1,0 +1,111 @@
+name: Defect
+description: Something in the game behaves differently from how it is meant to
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for playing, and for taking the time. The most useful report is
+        one that can be reproduced, and everything below exists to get to that.
+
+        **Spoilers:** other people read these issues before they play. If your
+        report has to describe what happens in the story, put that part inside a
+        `<details>` block.
+
+        The game is in Turkish, and so may your report be: Turkish or English are
+        both fine.
+
+        If what you have found is a **security** problem, please close this and
+        follow [SECURITY.md](../blob/main/SECURITY.md) instead.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you saw, in the order you saw it.
+      placeholder: |
+        In the autumn level I jumped onto the second word of the bridge and fell
+        straight through it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where in the game
+      options:
+        - The 2023 opening (menu, dialogue, first level)
+        - The break (Kırılma)
+        - The crimson forest (Kızıl Orman)
+        - The dark (Karanlık)
+        - Autumn (Sonbahar)
+        - The laboratory (Laboratuvar)
+        - Sunset (Gün batımı)
+        - A later visit (Ziyaret)
+        - The 2023 museum (2023'ü oyna)
+        - The pause menu
+        - Outside the game (download, launch, window, full screen)
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to reach it
+      description: >
+        Numbered steps. If it only happens sometimes, say how often and what
+        seems to make the difference.
+      placeholder: |
+        1. Start the autumn level
+        2. Walk to the bridge of words
+        3. Jump onto the second word while the third is still being written
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: >
+        The version in the name of the release you downloaded, or in the
+        properties of U-108.exe (Details, Product version). If you built it
+        yourself, the commit.
+      placeholder: "1.0.2"
+    validations:
+      required: true
+
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: "Windows 11 24H2"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: how
+    attributes:
+      label: How you ran it
+      options:
+        - The release package (U-108.exe from the zip)
+        - Built from source (dist/U-108.exe)
+        - In a browser (npm run dev)
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+      description: >
+        A screenshot or a short recording helps most. If you attach the memory
+        file (%APPDATA%\U-108\hafiza.json), remember it holds the name you typed
+        and the character's notes; remove anything personal first.

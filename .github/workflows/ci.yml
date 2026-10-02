@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  # Run on demand as well: a pipeline that can only be started by changing
+  # something cannot be used to check that it still passes without one.
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Build and check
+    # The shell is WinForms and the game ships for Windows; the checks run where it runs.
+    runs-on: windows-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Install the build tools
+        run: npm ci
+
+      - name: Type-check the game
+        run: npm run typecheck
+
+      - name: Bundle the game
+        run: node tools/build.mjs
+
+      # The version is written in four places; a release where they disagree tells
+      # a returning player the wrong thing about what changed.
+      - name: Check that every version agrees
+        run: node tools/surum-denetle.mjs
+
+      - name: Check the documents for long dashes
+        run: node tools/denetle-tire.mjs
+
+      - name: Set up .NET 10
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Build the shell
+        run: dotnet build host/U108.csproj -c Release -nologo
+
+  scenes:
+    name: Scenes in a browser
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      # No GPU and no sound card on the runner: WebGL2 through SwiftShader, and a
+      # fake audio output so the audio clock still moves. See tools/shot.mjs.
+      U108_YAZILIM: "1"
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Install the build tools
+        run: npm ci
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install chromium
+
+      # Every scene opens, plays for six seconds at a fixed step, draws something
+      # and raises no error.
+      - name: Smoke test every scene
+        run: node tools/shot.mjs --url "?sahne=menu2023&sifirla=1" --script tools/senaryolar/duman.mjs --out shots/duman/d.png --w 960 --h 540
+
+      # The 1.0.2 defect: after "Baştan başla" exactly one piano may play.
+      - name: Check that only one piano plays after a restart
+        run: node tools/shot.mjs --url "?sahne=ziyaret&bitmis=1&sifirla=1" --script tools/senaryolar/muzik102.mjs --out shots/muzik/a.png --secim bastan --w 960 --h 540 --nobuild 1
+
+      # Kept whatever the outcome, because the run worth looking at is the one that failed.
+      - name: Keep the frames
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: scene-frames
+          path: shots/
+          if-no-files-found: ignore
+          retention-days: 7

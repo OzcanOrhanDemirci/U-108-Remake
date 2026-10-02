@@ -1,0 +1,14 @@
+# Every file in this repository is reviewed by its author.
+#
+# The story, the dialogue and the 2023 parts are one person's first game; a change
+# to any of them needs the person whose game it is to have looked at it.
+
+*                           @OzcanOrhanDemirci
+
+# The parts where a mistake is expensive rather than merely wrong: the release
+# pipeline publishes what people download, and the shell decides what the game
+# may touch on their computer.
+/.github/workflows/         @OzcanOrhanDemirci
+/host/                      @OzcanOrhanDemirci
+/tools/paketle.mjs          @OzcanOrhanDemirci
+/tools/surum-denetle.mjs    @OzcanOrhanDemirci
