@@ -25,6 +25,8 @@ class Game {
   W = 1920; H = 1080;
   time = 0;
   dt = 1 / 60;
+  /** Yalnız test düzeneği: true iken step() çizmez (yazılım çizicili CI koşucusunda ara kareler). */
+  cizimAtla = false;
   scene: Scene | null = null;
   scenes: Record<string, () => Scene> = {};
   runner = new Runner();
@@ -95,6 +97,8 @@ class Game {
       this.scene?.update(dt);
     }
     input.endFrame();
+    // Test düzeneği, GPU'suz makinede (CI) ara kareleri çizdirmeden ilerletir; mantık her adımda işler.
+    if (this.cizimAtla) return;
     const ctx = this.ctx;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';

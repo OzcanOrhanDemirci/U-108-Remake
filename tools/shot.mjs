@@ -47,12 +47,15 @@ const out = args.out || 'shots/shot.png';
 fs.mkdirSync(path.dirname(out), { recursive: true });
 
 // Sabit adım: oyun döngüsünü durdurup elle ilerlet (tekrarlanabilir kareler)
+// Yazılım çizicide yalnız son adım çizilir: SwiftShader'a yüzlerce kare yığılınca ekran görüntüsü zaman aşımına
+// düşüyordu (CI, karanlık sahne). Oyunun mantığı her adımda aynen işler.
 async function advance(seconds) {
-  await page.evaluate(async (s) => {
+  await page.evaluate(async ([s, atla]) => {
     const G = window.__G; G.paused = true;
     const n = Math.round(s * 60);
-    for (let i = 0; i < n; i++) G.step(1 / 60);
-  }, seconds);
+    for (let i = 0; i < n; i++) { G.cizimAtla = atla && i < n - 1; G.step(1 / 60); }
+    G.cizimAtla = false;
+  }, [seconds, yazilim]);
 }
 
 const ctx = { page, advance, out, shot: async (file) => { await page.screenshot({ path: file }); console.log('kaydedildi', file); } };
