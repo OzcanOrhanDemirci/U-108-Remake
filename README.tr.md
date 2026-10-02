@@ -13,7 +13,7 @@ Tam olarak eskisi gibi başlar. Sonra hangi yılda olduğunu hatırlar.**
 [![Release](https://github.com/OzcanOrhanDemirci/U-108-Remake/actions/workflows/release.yml/badge.svg)](https://github.com/OzcanOrhanDemirci/U-108-Remake/actions/workflows/release.yml)
 [![Son sürüm](https://img.shields.io/github/v/release/OzcanOrhanDemirci/U-108-Remake?label=s%C3%BCr%C3%BCm&color=success)](https://github.com/OzcanOrhanDemirci/U-108-Remake/releases/latest)
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%20%C2%B7%2011-0078D4?logo=windows&logoColor=white)](#derleme)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)](#teknoloji)
+[![TypeScript](https://img.shields.io/badge/TypeScript-7.0-3178C6?logo=typescript&logoColor=white)](#teknoloji)
 [![WebGL2](https://img.shields.io/badge/WebGL-2.0-990000?logo=webgl&logoColor=white)](#mimari)
 [![.NET](https://img.shields.io/badge/.NET%2010-WebView2-512BD4?logo=dotnet&logoColor=white)](#mimari)
 [![Motor](https://img.shields.io/badge/motor-yok-1A0620)](#okumaya-değer-kararlar)
@@ -418,13 +418,13 @@ Tasarımın tamamı [`docs/TASARIM.md`](docs/TASARIM.md) dosyasında.
 
 | Konu | Seçim |
 | --- | --- |
-| Dil | TypeScript 5.9, strict |
+| Dil | TypeScript 7.0, strict |
 | Çizim | Sahneler için Canvas 2D, son işlem için WebGL2 |
 | Ses | WebAudio: piyano parçası, 2023 tanıtım sesi, koddan piyano ve pedler, evrişimle yankı |
 | Müzik | Python'da partisyon ve örnekleyici (NumPy, SciPy), Salamander Grand Piano örnekleri, ffmpeg |
-| Paketleme | esbuild 0.25 |
+| Paketleme | esbuild 0.28 |
 | Kabuk | .NET 10 WinForms, WebView2 1.0.4258 |
-| Test | Başsız Chromium'u sabit adımla süren Playwright 1.60; CI'da SwiftShader |
+| Test | Başsız Chromium'u sabit adımla süren Playwright 1.63; CI'da SwiftShader |
 | Hat | Windows'ta GitHub Actions: her değişiklikte denetimler, her etikette kendi içinde bir paket |
 | 2023'ü okumak | Tip ağacı üreticisiyle UnityPy |
 
