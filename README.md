@@ -13,7 +13,7 @@ It starts exactly as it was. Then it remembers what year it is.**
 [![Release](https://github.com/OzcanOrhanDemirci/U-108-Remake/actions/workflows/release.yml/badge.svg)](https://github.com/OzcanOrhanDemirci/U-108-Remake/actions/workflows/release.yml)
 [![Latest release](https://img.shields.io/github/v/release/OzcanOrhanDemirci/U-108-Remake?label=release&color=success)](https://github.com/OzcanOrhanDemirci/U-108-Remake/releases/latest)
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%20%C2%B7%2011-0078D4?logo=windows&logoColor=white)](#building)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)](#technology)
+[![TypeScript](https://img.shields.io/badge/TypeScript-7.0-3178C6?logo=typescript&logoColor=white)](#technology)
 [![WebGL2](https://img.shields.io/badge/WebGL-2.0-990000?logo=webgl&logoColor=white)](#architecture)
 [![.NET](https://img.shields.io/badge/.NET%2010-WebView2-512BD4?logo=dotnet&logoColor=white)](#architecture)
 [![Engine](https://img.shields.io/badge/engine-none-1A0620)](#decisions-worth-reading)
@@ -432,13 +432,13 @@ The full design is in [`docs/TASARIM.md`](docs/TASARIM.md), in Turkish.
 
 | Concern | Choice |
 | --- | --- |
-| Language | TypeScript 5.9, strict |
+| Language | TypeScript 7.0, strict |
 | Rendering | Canvas 2D for the scenes, WebGL2 for post-processing |
 | Audio | WebAudio: the piano piece, the 2023 narration, procedural piano and pads, reverb by convolution |
 | Music | Score and sampler in Python (NumPy, SciPy), Salamander Grand Piano samples, ffmpeg |
-| Bundling | esbuild 0.25 |
+| Bundling | esbuild 0.28 |
 | Shell | .NET 10 WinForms, WebView2 1.0.4258 |
-| Testing | Playwright 1.60 driving headless Chromium at a fixed step; SwiftShader in CI |
+| Testing | Playwright 1.63 driving headless Chromium at a fixed step; SwiftShader in CI |
 | Pipeline | GitHub Actions on Windows: checks on every change, a self-contained package on every tag |
 | Reading 2023 | UnityPy with a type-tree generator |
 
