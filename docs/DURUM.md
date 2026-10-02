@@ -73,8 +73,10 @@ Doğrulanmadı (Özcan'da):
 - **2023 kaydı yalnız bu bilgisayarda:** `yerel/assets/audio` (gitignore). `node tools/paketle.mjs` (kişisel paket,
   masaüstü kısayolu) onu kullanır; `--tam` (yayın) asla.
 - **Geçmiş temizliği:** eski müzik blob'ları bütün geçmişte yeni parçayla değiştirildi (git-filter-repo, tarihler
-  korundu). Eski blob'lar GitHub'da erişilebilir kalmasın diye özel depo `U-108-Remake-eski` adıyla kenara alındı,
-  temiz geçmiş yeni depoya gönderildi. Yedek: geçmişten önceki tam bundle (oturum karalama klasörü, kalıcı değil).
+  korundu). Eski blob'lar GitHub'da erişilebilir kalmasın diye temiz geçmiş yeni depoya gönderildi; eski müzikli
+  özel depo (`U-108-Remake-eski`) Özcan'ın izniyle silindi (2026-10-02).
+- **Orijinal `OzcanOrhanDemirci/U-108` deposuna dokunulmaz** (Özcan, 10-02): "orijinalliği bozulmasın", öğrenci projesi
+  olarak kalsın. İçindeki build aynı 2023 müziğini taşıyor; bu bilerek böyle. İki depo arasındaki fark bir gelişim.
 - **Tanıtım sesi** Özcan'ın kendi sesi (18.07.2023 06:51, build'den bir dakika sonra, Windows Ses Kaydedicisi).
 - Public altyapı Hava/Checklist ile aynı düzende: CI, release, CONTRIBUTING, SECURITY, CoC, şablonlar, dependabot.
 
