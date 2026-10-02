@@ -447,7 +447,8 @@ tutulur.
 
 ## Emeği geçenler ve lisanslar
 
-- **Yeniden yapım** MIT lisansıyla yayımlanır; bkz. [LICENSE](LICENSE).
+- **Yeniden yapım** MIT lisansıyla yayımlanır; bkz. [LICENSE](LICENSE). Kapsamadığı şeyler
+  [NOTICE](NOTICE) içinde.
 - **2023 orijinali** 2023'te Oyun ve Uygulama Akademisi bootcamp'inde Takım Unity 108 tarafından
   yapıldı ve MIT lisansıyla [OzcanOrhanDemirci/U-108](https://github.com/OzcanOrhanDemirci/U-108)
   adresinde yayımlandı; takım orada listeli. `public/assets/2023` ve `public/assets/audio` içindeki

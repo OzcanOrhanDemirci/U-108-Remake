@@ -38,7 +38,7 @@ if (tam) {
   fs.mkdirSync(sahne, { recursive: true });
   fs.copyFileSync('dist/U-108.exe', path.join(sahne, 'U-108.exe'));
   fs.cpSync('dist/oyun', path.join(sahne, 'oyun'), { recursive: true });
-  for (const f of ['LICENSE', 'README.md', 'README.tr.md', 'CHANGELOG.md']) fs.copyFileSync(f, path.join(sahne, f));
+  for (const f of ['LICENSE', 'NOTICE', 'README.md', 'README.tr.md', 'CHANGELOG.md']) fs.copyFileSync(f, path.join(sahne, f));
 
   // .NET'in kendi zip yazıcısı: girdi yolları her işletim sisteminde açılabilen '/' ayraçlı olur
   const zip = path.resolve('dist', `${ad}.zip`);
