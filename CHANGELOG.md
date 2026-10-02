@@ -9,6 +9,17 @@ version is met by a character who notices that his world was patched, and says s
 
 ## [1.0.2] · 2026-10-02
 
+The first public release.
+
+### Changed
+- **A new piano piece.** Nobody remembers where the 2023 game's piano music came from, so it cannot
+  be given away under a licence and is not part of this release. In its place plays *Bir sonraki
+  döngü*, written for it in the same key (F minor), with the same pedalled chord every 3.3 seconds,
+  the same form, length and loudness, and a new melody and harmony. The score is code,
+  `tools/muzik/beste.py`, played on the Salamander Grand Piano samples (CC BY 3.0).
+- Releases are self-contained: the .NET runtime is inside `U-108.exe`, and each package is built by
+  the release workflow from the tagged source and published with its SHA-256 checksum.
+
 ### Fixed
 - **A spelling mistake in the forest.** The character asked *"Ben... ilk muydum?"*; Turkish vowel
   harmony wants *"ilk miydim?"*. Every line in the game was read again, and three smaller wordings

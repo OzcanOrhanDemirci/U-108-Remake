@@ -9,17 +9,21 @@
 **2023'te bir bootcamp'te yapılmış ilk oyun, üç yıl sonra sıfırdan yeniden yapıldı.<br />
 Tam olarak eskisi gibi başlar. Sonra hangi yılda olduğunu hatırlar.**
 
+[![CI](https://github.com/OzcanOrhanDemirci/U-108-Remake/actions/workflows/ci.yml/badge.svg)](https://github.com/OzcanOrhanDemirci/U-108-Remake/actions/workflows/ci.yml)
+[![Release](https://github.com/OzcanOrhanDemirci/U-108-Remake/actions/workflows/release.yml/badge.svg)](https://github.com/OzcanOrhanDemirci/U-108-Remake/actions/workflows/release.yml)
+[![Son sürüm](https://img.shields.io/github/v/release/OzcanOrhanDemirci/U-108-Remake?label=s%C3%BCr%C3%BCm&color=success)](https://github.com/OzcanOrhanDemirci/U-108-Remake/releases/latest)
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%20%C2%B7%2011-0078D4?logo=windows&logoColor=white)](#derleme)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)](#teknoloji)
 [![WebGL2](https://img.shields.io/badge/WebGL-2.0-990000?logo=webgl&logoColor=white)](#mimari)
 [![.NET](https://img.shields.io/badge/.NET%2010-WebView2-512BD4?logo=dotnet&logoColor=white)](#mimari)
 [![Motor](https://img.shields.io/badge/motor-yok-1A0620)](#okumaya-değer-kararlar)
 [![Oyun dili](https://img.shields.io/badge/oyun%20dili-T%C3%BCrk%C3%A7e-E30A17)](#oynamak)
-[![Sürüm](https://img.shields.io/badge/s%C3%BCr%C3%BCm-1.0.2-success)](CHANGELOG.md)
 [![Lisans](https://img.shields.io/badge/lisans-MIT-blue)](LICENSE)
 
 [![2023 orijinali](https://img.shields.io/badge/2023%20orijinali-Tak%C4%B1m%20Unity%20108-FFC72C?labelColor=1a1a1a)](https://github.com/OzcanOrhanDemirci/U-108)
 [![Bootcamp](https://img.shields.io/badge/Oyun%20ve%20Uygulama%20Akademisi-Bootcamp%202023-FFC72C?labelColor=1a1a1a)](#hikâye)
+
+**[Son paketi indir](https://github.com/OzcanOrhanDemirci/U-108-Remake/releases/latest)** · Windows 10 ve 11, x64 · .NET kurulumu gerekmez · hiçbir veri toplanmaz
 
 [Hikâye](#hikâye) · [Dün ve bugün](#dün-ve-bugün) · [Oynamak](#oynamak) · [Nasıl yapıldı](#nasıl-yapıldı) · [Mimari](#mimari) · [Ne doğrulandı](#ne-doğrulandı) · [Derleme](#derleme) · [Gizlilik](#oyunun-okuduğu-ve-yazdığı-dosyalar) · [Emeği geçenler](#emeği-geçenler-ve-lisanslar)
 
@@ -97,15 +101,24 @@ build'den okunan verilerle yeniden üretiyor.
 | Karakter | Elle çizilmiş sprite'lar, 12 fps'de dört karelik yürüyüş | Kodla çizilen iskeletli bir kukla; oranları ve renkleri 2023 sprite'larından ölçüldü |
 | Açılış | Menü, diyalog, ilk bölüm | Aynısı, birebir: fizik, yazı hızı ve yerleşim build'den okundu |
 | Dünyalar | İki bölüm, bir laboratuvar | Beş: kızıl orman, karanlık, sonbahar, laboratuvar, gün batımı |
-| Müzik | Tek bir piyano parçası, Fa minör, yaklaşık 52 BPM | Aynı kayıt ve onun tonunda koddan üretilen bir keçe piyano |
+| Müzik | Fa minörde tek bir piyano parçası, her 3,3 saniyede bir pedallı akor | Aynı ton, nefes ve biçimde yeni bir parça ([neden](#müzik)) ve çevresinde koddan üretilen bir keçe piyano |
 | Diyalog | Özcan yazdı | Bir yapay zekâ yazdı; 2023 replikleri geçtikleri yerde korundu |
 | Hafıza | Yok. Her açılış baştan başlar | Seni hatırlar: oturumlar arasında, sürümler arasında |
 
 ## Oynamak
 
-Paketlenmiş sürümler [Releases](https://github.com/OzcanOrhanDemirci/U-108-Remake/releases) altında:
-arşivi aç, `U-108.exe` dosyasını `oyun` klasörünün yanında tut ve çalıştır. Kendin derlemek için
-[Derleme](#derleme) bölümüne bak.
+[Son sürümden](https://github.com/OzcanOrhanDemirci/U-108-Remake/releases/latest)
+`U-108-Remake-<sürüm>-win-x64.zip` dosyasını indir, arşivi aç ve `oyun` klasörünü yanında tutarak
+`U-108.exe` dosyasını çalıştır. Paket kendi içindedir: .NET çalışma zamanı exe'nin içinde, yani
+Windows 11'de hiçbir şey kurmak gerekmez. Windows 10'da WebView2 Runtime gerekir; çoğu bilgisayarda
+zaten vardır.
+
+Exe kod imzalı değil; bu yüzden Windows SmartScreen ilk açılışta onay isteyebilir. Her paket,
+etiketlenmiş kaynaktan
+[sürüm iş akışıyla](https://github.com/OzcanOrhanDemirci/U-108-Remake/actions/workflows/release.yml)
+derlenir ve SHA-256 sağlama toplamıyla yayımlanır; nasıl karşılaştırılacağı
+[SECURITY.md](SECURITY.md#verifying-a-download) içinde. Kendin derlemek için [Derleme](#derleme)
+bölümüne bak.
 
 **Oyun Türkçedir.** 2023'ten korunan replikler dahil bütün diyaloglar Türkçe; oyunun bilerek bir
 çevirisi yok. Bu, belirli bir projenin, yazıldığı dildeki hikâyesi.
@@ -160,6 +173,22 @@ taşlar, koşarken boynun gerisinde kalan bir baş, bir yazım hatası ve yenide
 çalan iki piyano. Düzeltmelerin hikâyenin parçası olmasını istedi. Öyle oldu: oyunu bitirmiş biri
 yeni bir sürümü açınca, dünyasının yamandığını fark eden bir karakterle karşılaşır. Neyin değiştiği
 [değişiklik günlüğünde](CHANGELOG.md).
+
+### Müzik
+
+2023 oyununun tek bir piyano parçası vardı ve nereden geldiğini kimse hatırlamıyor; takım
+öğrenciydi. Bestecisi bilinmeyen bir parça bir lisansla dağıtılamaz, bu yüzden public sürümde yok.
+
+Yerine bu sürüm için yazılan *Bir sonraki döngü* çalıyor. 2023 parçasını o yapan şeyleri koruyor: Fa
+minör, her 3,3 saniyede bir pedallı akor, üstünde seyrek bir melodi, aynı sakin giriş, ortada kırık
+akorlarla aynı yükseliş, aynı dönüş ve aynı uzunluk. Melodi ve armoni yeni; bir kopya, yerine
+geçtiği sorunu da devralırdı. Partisyon koddur, [`tools/muzik/beste.py`](tools/muzik/beste.py)
+içinde: kısa bir örnekleyici onu [Salamander Grand Piano](https://github.com/sfzinstruments/SalamanderGrandPiano)
+ile çalar ve ses düzeyini 2023 kaydına eşler. Her nota, sürtünen yarım seslere karşı ötekilerle
+denetlendi; sonucu kulağıyla, orijinali seven Özcan onayladı.
+
+Özcan'ın kendi bilgisayarında 2023 kaydı hâlâ çalıyor. Bu depoya ve sürümlerine hiç girmeyen bir
+klasörde duruyor.
 
 ## Mimari
 
@@ -226,8 +255,8 @@ docs/        tasarım notları (spoiler), 2023 build'inden okunan veriler, durum
 - **Üreteç olarak senaryolar.** Her sahnenin senaryosu `wait`, `tween` ve `all` ile kurulan bir üreteç
   eşyordamıdır. Konuşmalar bir kuyruktan geçer; oyuncunun tetiklediği replikler üst üste binmez,
   acil bir sahne süren birini kesebilir.
-- **Üst üste binmeyen ses.** 2023 kaydı olduğu gibi çalınır; çevresinde 2023 parçasının tonunda,
-  Fa minör ve La♭ majörde, koddan üretilen bir keçe piyano ve pedler çalar. Döngüdeki her parça
+- **Üst üste binmeyen ses.** Piyano parçası işlendiği gibi çalınır; çevresinde 2023 parçasının
+  belirlediği tonda, Fa minör ve La♭ majörde, koddan üretilen bir keçe piyano ve pedler çalar. Döngüdeki her parça
   çıkışta durdurulan bir tutamak taşır ve müzik veriyolu bir testin sayabileceği bir kayıt tutar.
   İkisi de 1.0.2 hatasından doğdu.
 - **Hikâyenin parçası olarak hafıza.** Küçük, sürümlü bir JSON dosyası. Oyun ne kadar uzak kaldığını,
@@ -240,6 +269,14 @@ docs/        tasarım notları (spoiler), 2023 build'inden okunan veriler, durum
 
 ```bash
 npm run typecheck
+node tools/surum-denetle.mjs     # sürümün yazıldığı dört yer aynı
+node tools/denetle-tire.mjs      # belgelerde uzun çizgi yok
+
+# her sahne açılır, birkaç saniye oynar, bir şey çizer ve hata vermez
+node tools/shot.mjs --url "?sahne=menu2023&sifirla=1" --script tools/senaryolar/duman.mjs --out shots/duman/d.png
+
+# partisyonda sürtünen yarım ses yok (tam komut ayrıca müziği çalar ve yazar)
+python tools/muzik/beste.py --denetle
 
 # bot 2023 menüsünden sona kadar oynar
 node tools/shot.mjs --url "?sahne=menu2023&sifirla=1" --script tools/senaryolar/bot.mjs --out shots/bot/b.png
@@ -252,7 +289,10 @@ node tools/shot.mjs --url "?sahne=ziyaret&bitmis=1&sifirla=1" --script tools/sen
 ```
 
 Ekran görüntüsü düzeneği oyunu başsız Chromium'da 1/60 saniyelik sabit adımla sürer; bir senaryonun
-her çalıştırması aynı kareleri görür.
+her çalıştırması aynı kareleri görür. [CI hattı](.github/workflows/ci.yml) bunların ilk beşini ve tek
+piyano testini her push'ta ve her PR'da, GPU'suz bir Windows koşucusunda çalıştırır; orada WebGL2
+SwiftShader ile çizilir. Bot ve arama daha uzun sürer; fiziğe ya da hikâyenin akışına dokunan bir
+değişiklikte elle çalıştırılır.
 
 - **Oyunun tamamı, uçtan uca.** Bir bot 2023 menüsünden sona kadar tek bir kez bile ölmeden oynar.
   Oyun kendini kapatır; bıraktığı mektup ve hafıza, Türkçe harflerle yazılmış bir isim dahil, kontrol
@@ -269,6 +309,10 @@ her çalıştırması aynı kareleri görür.
   kareden sonra sıçrama yok.
 - **Ses yüksekliği.** Ses çevrimdışı işlenerek ölçüldü: müzik yaklaşık -28 ile -32 dB RMS arasında,
   2023 kaydının -27,9 dB'sinin yanında; kırpılma yok.
+- **Yeni parça.** 2023 kaydına karşı ölçüldü: aynı tempo (vuruş analiziyle dakikada 72), aynı uzunluk
+  ve her sekiz saniyelik pencerede 2 dB içinde ses düzeyi. Tık yok, partisyonda sürtünen yarım ses
+  yok; betik böyle bir partisyonu çalmayı reddeder. Aynı betik yayımlanan dosyaları birebir yeniden
+  üretir.
 - **Paketlenmiş uygulama.** Görünmez test kipi bir ziyareti baştan sona oynar ve köprüyü denetler:
   hafıza okuma ve yazma, Türkçe harfli bir mektup, WebGL2, altı yazı tipinin altısı.
 
@@ -288,15 +332,18 @@ kısım Özcan'ındı: oynadı ve bulduğu her hata [değişiklik günlüğünde
 git clone https://github.com/OzcanOrhanDemirci/U-108-Remake.git
 cd U-108-Remake
 npm install
-npm run dev              # derle, izle ve http://localhost:8108 adresinde sun
-node tools/paketle.mjs   # oyunu dist/oyun'a, kabuğu dist/U-108.exe'ye
+npm run dev                    # derle, izle ve http://localhost:8108 adresinde sun
+node tools/paketle.mjs         # oyunu dist/oyun'a, kabuğu dist/U-108.exe'ye
+node tools/paketle.mjs --tam   # sürüm paketi: kendi içinde, sıkıştırılmış, sağlama toplamıyla
 ```
 
-`dist/U-108.exe`, yanındaki `dist/oyun` klasörüyle çalışır. .NET çalışma zamanına bağlı
-(framework-dependent) yayımlandığı için SDK'sı olmayan bir bilgisayarda .NET 10 Desktop Runtime
-gerekir. Ekran görüntüsü
-düzeneği ve test senaryoları Playwright için bir tarayıcıya da ihtiyaç duyar:
-`npx playwright install chromium`.
+`dist/U-108.exe`, yanındaki `dist/oyun` klasörüyle çalışır. `--tam` olmadan .NET çalışma zamanına
+bağlı (framework-dependent) yayımlanır; .NET 10 kurulu bir bilgisayar için uygundur. `--tam` ile
+çalışma zamanını içinde taşır ve tam bir sürüm gibi arşivlenir. Git'in yok saydığı bir `yerel/`
+klasörü varsa yalnız ilk durumda `dist/oyun` üstüne serilir: 2023 kaydı tek bir bilgisayarda ve
+bütün sürümlerin dışında böyle kalır. Ekran görüntüsü düzeneği ve test senaryoları Playwright için
+bir tarayıcıya da ihtiyaç duyar: `npx playwright install chromium`. Müzik betiği için NumPy ve SciPy
+kurulu Python 3 ve ffmpeg gerekir.
 
 Düz bir tarayıcıda oyun kabuksuz çalışır: hafıza `localStorage`'a düşer, mektup masaüstüne yazılmaz.
 Geliştirme için birkaç parametre alır:
@@ -357,7 +404,7 @@ döngü, ziyaret edilen bir yere dönüşür.
   `Application.Quit();` satırını sona kadar taşır.
 - **Gün batımı.** Hediye olarak bir hafıza, oyuncunun yazdığı ve harfleri köprü olan bir isim,
   *"Klavyeyi bırakır mısın?"* ve karakter kendi yürür. 2023 kapısına dokunur ve gitmeyeceğini söyler.
-  Kenara oturur, 2023 piyanosu çalar, yapay zekâ veda eder ve imleci durur. Oyun kendini kapatır ve
+  Kenara oturur, piyano çalar, yapay zekâ veda eder ve imleci durur. Oyun kendini kapatır ve
   masaüstüne bir mektup bırakır.
 - **Ziyaret.** Sonraki her açılışta onu uçurumda bulursun. Ne kadar uzak kaldığını ve saatin kaç
   olduğunu bilir, ilk ziyaretlerin her birinde söyleyecek yeni bir şeyi vardır, bir defter tutar ve
@@ -373,21 +420,30 @@ Tasarımın tamamı [`docs/TASARIM.md`](docs/TASARIM.md) dosyasında.
 | --- | --- |
 | Dil | TypeScript 5.9, strict |
 | Çizim | Sahneler için Canvas 2D, son işlem için WebGL2 |
-| Ses | WebAudio: kayıtlı 2023 sesi, koddan piyano ve pedler, evrişimle yankı |
+| Ses | WebAudio: piyano parçası, 2023 tanıtım sesi, koddan piyano ve pedler, evrişimle yankı |
+| Müzik | Python'da partisyon ve örnekleyici (NumPy, SciPy), Salamander Grand Piano örnekleri, ffmpeg |
 | Paketleme | esbuild 0.25 |
 | Kabuk | .NET 10 WinForms, WebView2 1.0.4258 |
-| Test | Başsız Chromium'u sabit adımla süren Playwright 1.60 |
+| Test | Başsız Chromium'u sabit adımla süren Playwright 1.60; CI'da SwiftShader |
+| Hat | Windows'ta GitHub Actions: her değişiklikte denetimler, her etikette kendi içinde bir paket |
 | 2023'ü okumak | Tip ağacı üreticisiyle UnityPy |
 
-## Belgeler
+## Depoda çalışmak
 
 | | |
 | --- | --- |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Neyin değişmeye açık olduğu, neyin olmadığı, bir commit'in biçimi ve "bitti demeden önce oyna" kuralı (İngilizce) |
 | [CHANGELOG.md](CHANGELOG.md) | Her sürüm ve onda neyin değiştiği (İngilizce) |
+| [SECURITY.md](SECURITY.md) | Oyunun neye erişebildiği, indirilen paketin nasıl doğrulanacağı ve bir sorunun gizlice nasıl bildirileceği (İngilizce) |
+| [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) | Contributor Covenant |
+| [docs/RELEASE.md](docs/RELEASE.md) | Bir sürümün nasıl çıkarıldığı ve hattın sürümle uyuşmayan etiketi neden reddettiği (İngilizce) |
 | [docs/TASARIM.md](docs/TASARIM.md) | Sahne sahne tasarım. Spoiler içerir |
 | [docs/ORIJINAL.md](docs/ORIJINAL.md) | 2023 build'inden okunanlar |
 | [docs/DURUM.md](docs/DURUM.md) | Çalışma günlüğü: neyin doğrulandığı, neyin doğrulanmadığı |
 | [public/assets/fonts/licenses](public/assets/fonts/licenses) | Yazı tipleri ve lisansları |
+
+`main`'e doğrudan push yapılmaz. Her değişiklik hattın geçirdiği bir PR ile gelir ve geçmiş doğrusal
+tutulur.
 
 ## Emeği geçenler ve lisanslar
 
@@ -395,8 +451,15 @@ Tasarımın tamamı [`docs/TASARIM.md`](docs/TASARIM.md) dosyasında.
 - **2023 orijinali** 2023'te Oyun ve Uygulama Akademisi bootcamp'inde Takım Unity 108 tarafından
   yapıldı ve MIT lisansıyla [OzcanOrhanDemirci/U-108](https://github.com/OzcanOrhanDemirci/U-108)
   adresinde yayımlandı; takım orada listeli. `public/assets/2023` ve `public/assets/audio` içindeki
-  sprite'lar, bölüm görselleri, kurşun kalem eskizi, menü düğmeleri, müzik ve tanıtım seslendirmesi
-  2023 build'inden geliyor; 2023 diyalogları da oradan alıntılanıyor.
+  sprite'lar, bölüm görselleri, kurşun kalem eskizi ve menü düğmeleri 2023 build'inden geliyor; 2023
+  diyalogları da oradan alıntılanıyor. Karakteri, animasyonlarını ve arka planları takım kendisi çizdi.
+- **Tanıtım seslendirmesi** (`public/assets/audio/ses_*.ogg`) Özcan'ın kendi sesi; 18 Temmuz 2023
+  saat 06:51'de, build'den bir dakika sonra kaydedildi.
+- **Piyano parçası** *Bir sonraki döngü* (`public/assets/audio/piyano*.ogg`) bu sürüm için yazıldı ve
+  [`tools/muzik/beste.py`](tools/muzik/beste.py) ile üretilir; kodun geri kalanı gibi MIT lisanslı.
+  Alexander Holm'un [Salamander Grand Piano](https://github.com/sfzinstruments/SalamanderGrandPiano)
+  örnekleriyle, [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) altında çalınır. 2023
+  parçası dahil değil; nedeni [Müzik](#müzik) bölümünde.
 - **Yazı tipleri.** Fraunces, Inter ve JetBrains Mono SIL Open Font License 1.1 ile; Andrew Tyler'ın
   Minecraftia'sı ve LDEJRuff'ın Early GameBoy'u CC BY-SA 3.0 ile; Yuji Oshimoto'nun 04b'si freeware
   olarak. Ayrıntılar ve lisans metinleri [`public/assets/fonts/licenses`](public/assets/fonts/licenses)

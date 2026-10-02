@@ -9,17 +9,21 @@
 **A first game, made at a bootcamp in 2023, rebuilt from nothing three years later.<br />
 It starts exactly as it was. Then it remembers what year it is.**
 
+[![CI](https://github.com/OzcanOrhanDemirci/U-108-Remake/actions/workflows/ci.yml/badge.svg)](https://github.com/OzcanOrhanDemirci/U-108-Remake/actions/workflows/ci.yml)
+[![Release](https://github.com/OzcanOrhanDemirci/U-108-Remake/actions/workflows/release.yml/badge.svg)](https://github.com/OzcanOrhanDemirci/U-108-Remake/actions/workflows/release.yml)
+[![Latest release](https://img.shields.io/github/v/release/OzcanOrhanDemirci/U-108-Remake?label=release&color=success)](https://github.com/OzcanOrhanDemirci/U-108-Remake/releases/latest)
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%20%C2%B7%2011-0078D4?logo=windows&logoColor=white)](#building)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)](#technology)
 [![WebGL2](https://img.shields.io/badge/WebGL-2.0-990000?logo=webgl&logoColor=white)](#architecture)
 [![.NET](https://img.shields.io/badge/.NET%2010-WebView2-512BD4?logo=dotnet&logoColor=white)](#architecture)
 [![Engine](https://img.shields.io/badge/engine-none-1A0620)](#decisions-worth-reading)
 [![Game language](https://img.shields.io/badge/game%20language-T%C3%BCrk%C3%A7e-E30A17)](#the-game-is-in-turkish)
-[![Version](https://img.shields.io/badge/version-1.0.2-success)](CHANGELOG.md)
 [![Licence](https://img.shields.io/badge/licence-MIT-blue)](LICENSE)
 
 [![2023 original](https://img.shields.io/badge/2023%20original-Team%20Unity%20108-FFC72C?labelColor=1a1a1a)](https://github.com/OzcanOrhanDemirci/U-108)
 [![Bootcamp](https://img.shields.io/badge/Oyun%20ve%20Uygulama%20Akademisi-Bootcamp%202023-FFC72C?labelColor=1a1a1a)](#the-story)
+
+**[Download the latest package](https://github.com/OzcanOrhanDemirci/U-108-Remake/releases/latest)** · Windows 10 and 11, x64 · self-contained · nothing collected
 
 [The story](#the-story) · [Then and now](#then-and-now) · [Playing](#playing) · [How it was made](#how-it-was-made) · [Architecture](#architecture) · [What is verified](#what-is-verified) · [Building](#building) · [Privacy](#what-the-game-reads-and-writes) · [Credits](#credits-and-licences)
 
@@ -111,15 +115,23 @@ mode, which reproduces the original from data read out of the build.
 | Character | Hand-drawn sprites, a four-frame walk at 12 fps | A rigged puppet drawn in code, proportions and colours measured from the 2023 sprites |
 | Opening | Menu, dialogue, first level | The same, one to one: physics, text speed and layout read from the build |
 | Worlds | Two levels, a laboratory | Five: the crimson forest, the dark, autumn, the laboratory, the sunset |
-| Music | One piano piece, F minor, about 52 BPM | The same recording, and a procedural felt piano in its key |
+| Music | One piano piece in F minor, a pedalled chord every 3.3 seconds | A new piece in the same key, breath and form ([why](#the-music)), and a procedural felt piano around it |
 | Dialogue | Written by Özcan | Written by an AI; the 2023 lines are kept where they appear |
 | Memory | None. Every launch starts over | It remembers you, between sessions, across versions |
 
 ## Playing
 
-Packaged builds are attached to [Releases](https://github.com/OzcanOrhanDemirci/U-108-Remake/releases):
-unpack, keep `U-108.exe` next to its `oyun` folder, and run it. To build it yourself, see
-[Building](#building).
+Download `U-108-Remake-<version>-win-x64.zip` from the
+[latest release](https://github.com/OzcanOrhanDemirci/U-108-Remake/releases/latest), unzip it, and
+run `U-108.exe`, keeping the `oyun` folder beside it. The package is self-contained: the .NET runtime
+is inside the executable, so nothing needs installing on Windows 11. Windows 10 needs the WebView2
+Runtime, which most machines already have.
+
+The executable is not code-signed, so Windows SmartScreen may ask before the first launch. Every
+package is built from the tagged source by the
+[release workflow](https://github.com/OzcanOrhanDemirci/U-108-Remake/actions/workflows/release.yml)
+and published with its SHA-256 checksum; [SECURITY.md](SECURITY.md#verifying-a-download) shows how
+to compare them. To build it yourself, see [Building](#building).
 
 | | Keyboard | Gamepad |
 | --- | --- | --- |
@@ -172,6 +184,24 @@ stand on, a head that trailed behind the neck while running, a spelling mistake,
 playing at once after a restart. He asked for the fixes to become part of the story. They did: a
 player who has finished the game and opens a newer version meets a character who notices that his
 world was patched. What changed is in the [changelog](CHANGELOG.md).
+
+### The music
+
+The 2023 game had one piano piece, and nobody remembers where it came from; the team were students.
+A piece whose author is unknown cannot be given away under a licence, so the public release does not
+contain it.
+
+In its place plays *Bir sonraki döngü*, a piece written for this release. It keeps what made the
+2023 piece what it was: F minor, a pedalled chord every 3.3 seconds, a sparse melody above it, the
+same quiet opening, the same rise into broken chords in the middle, the same return and the same
+length. The melody and the harmony are new, because a copy would have inherited the problem it
+replaces. The score is code, in [`tools/muzik/beste.py`](tools/muzik/beste.py): a short sampler plays
+it on the [Salamander Grand Piano](https://github.com/sfzinstruments/SalamanderGrandPiano) and
+matches its loudness to the 2023 recording. Every note was checked against the others for clashing
+semitones; the result was approved by ear by Özcan, who loved the original.
+
+On Özcan's own computer the 2023 recording still plays. It lives in a folder that never enters this
+repository or its releases.
 
 ## Architecture
 
@@ -238,8 +268,8 @@ docs/        design notes (spoilers), data read from the 2023 build, status log,
 - **Scripts as generators.** Each scene's script is a generator coroutine built from `wait`, `tween`
   and `all`. Conversations go through a queue, so lines triggered by the player never overlap, and an
   urgent scene can interrupt a running one.
-- **Sound that does not pile up.** The 2023 recording is played as it was; around it a procedural
-  felt piano and pads play in F minor and A♭ major, the key of the 2023 piece. Every looping track
+- **Sound that does not pile up.** The piano piece plays as it was rendered; around it a procedural
+  felt piano and pads play in F minor and A♭ major, the key the 2023 piece set. Every looping track
   keeps a handle that is stopped on exit, and the music bus keeps a registry a test can count. Both
   came from the 1.0.2 bug.
 - **Memory as part of the story.** A small versioned JSON file. The game knows how long you have been
@@ -252,6 +282,14 @@ docs/        design notes (spoilers), data read from the 2023 build, status log,
 
 ```bash
 npm run typecheck
+node tools/surum-denetle.mjs     # the four places the version is written agree
+node tools/denetle-tire.mjs      # no long dashes in the documents
+
+# every scene opens, plays for a few seconds, draws something and raises no error
+node tools/shot.mjs --url "?sahne=menu2023&sifirla=1" --script tools/senaryolar/duman.mjs --out shots/duman/d.png
+
+# the score has no clashing semitones (the full command also renders and writes the music)
+python tools/muzik/beste.py --denetle
 
 # the bot plays from the 2023 menu to the ending
 node tools/shot.mjs --url "?sahne=menu2023&sifirla=1" --script tools/senaryolar/bot.mjs --out shots/bot/b.png
@@ -264,7 +302,10 @@ node tools/shot.mjs --url "?sahne=ziyaret&bitmis=1&sifirla=1" --script tools/sen
 ```
 
 The screenshot harness drives the game in headless Chromium with a fixed step of 1/60 s, so every
-run of a scenario sees the same frames.
+run of a scenario sees the same frames. The [CI pipeline](.github/workflows/ci.yml) runs the first
+five of these, and the one-piano test, on every push and pull request, on a Windows runner with no
+GPU: WebGL2 renders through SwiftShader there. The bot and the search take longer and are run by
+hand when a change touches physics or the story's flow.
 
 - **The whole game, end to end.** A bot plays from the 2023 menu to the ending without a single
   death. The game closes itself, and the letter and the memory it leaves are checked, including a
@@ -281,6 +322,10 @@ run of a scenario sees the same frames.
   spikes after the first frame.
 - **Loudness.** Measured by rendering the audio offline: the music sits around -28 to -32 dB RMS,
   next to the 2023 recording's -27.9 dB, without clipping.
+- **The new piece.** Against the 2023 recording it was measured to have the same tempo (72 beats per
+  minute, by onset analysis), the same length, and a loudness within 2 dB in every eight-second
+  window. No clicks, and no clashing semitones in the score; the script refuses to render one that
+  has them. The same script reproduces the released files exactly.
 - **The packaged application.** The invisible test mode plays a visit end to end and checks the
   bridge: memory read and write, a letter with Turkish letters, WebGL2, all six typefaces.
 
@@ -300,13 +345,17 @@ played it, and every mistake he found is in the [changelog](CHANGELOG.md).
 git clone https://github.com/OzcanOrhanDemirci/U-108-Remake.git
 cd U-108-Remake
 npm install
-npm run dev              # build, watch, and serve on http://localhost:8108
-node tools/paketle.mjs   # the game to dist/oyun, the shell to dist/U-108.exe
+npm run dev                    # build, watch, and serve on http://localhost:8108
+node tools/paketle.mjs         # the game to dist/oyun, the shell to dist/U-108.exe
+node tools/paketle.mjs --tam   # the release package: self-contained, zipped, with its checksum
 ```
 
-`dist/U-108.exe` runs with the `dist/oyun` folder beside it. It is published framework-dependent,
-so a machine without the SDK needs the .NET 10 Desktop Runtime. The screenshot harness and the test
-scenarios also need a browser for Playwright: `npx playwright install chromium`.
+`dist/U-108.exe` runs with the `dist/oyun` folder beside it. Without `--tam` it is published
+framework-dependent, which suits a machine that already has .NET 10; with `--tam` it carries its
+runtime and is zipped exactly as a release is. A git-ignored `yerel/` folder, if present, is laid over
+`dist/oyun` in the first case only: that is how the 2023 recording stays on one computer and out of
+every release. The screenshot harness and the test scenarios also need a browser for Playwright:
+`npx playwright install chromium`. The music script needs Python 3 with NumPy and SciPy, and ffmpeg.
 
 In a plain browser the game runs without the shell: the memory falls back to `localStorage` and the
 letter is not written to the desktop. For development it accepts a few parameters:
@@ -369,7 +418,7 @@ is given a memory file too, and the loop that was a prison becomes a place to vi
   and carries `Application.Quit();` to the end.
 - **Sunset.** A memory as a gift, a name typed by the player whose letters become a bridge, *"Klavyeyi
   bırakır mısın?"*, and the character walks on his own. He touches the 2023 door and says he will not
-  go. He sits at the edge, the 2023 piano plays, the AI says goodbye and its cursor stops. The game
+  go. He sits at the edge, the piano plays, the AI says goodbye and its cursor stops. The game
   closes itself, and leaves a letter on the desktop.
 - **The visit.** Every later launch finds him at the cliff. He knows how long you were away and what
   time it is, has something new to say on each of the first visits, keeps a notebook, and lets you play 2023 again,
@@ -385,21 +434,30 @@ The full design is in [`docs/TASARIM.md`](docs/TASARIM.md), in Turkish.
 | --- | --- |
 | Language | TypeScript 5.9, strict |
 | Rendering | Canvas 2D for the scenes, WebGL2 for post-processing |
-| Audio | WebAudio: recorded 2023 audio, procedural piano and pads, reverb by convolution |
+| Audio | WebAudio: the piano piece, the 2023 narration, procedural piano and pads, reverb by convolution |
+| Music | Score and sampler in Python (NumPy, SciPy), Salamander Grand Piano samples, ffmpeg |
 | Bundling | esbuild 0.25 |
 | Shell | .NET 10 WinForms, WebView2 1.0.4258 |
-| Testing | Playwright 1.60 driving headless Chromium at a fixed step |
+| Testing | Playwright 1.60 driving headless Chromium at a fixed step; SwiftShader in CI |
+| Pipeline | GitHub Actions on Windows: checks on every change, a self-contained package on every tag |
 | Reading 2023 | UnityPy with a type-tree generator |
 
-## Documents
+## Working in this repository
 
 | | |
 | --- | --- |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | What is open to change and what is not, the shape of a commit, and the rule about playing it before calling it done |
 | [CHANGELOG.md](CHANGELOG.md) | Every version and what changed in it |
+| [SECURITY.md](SECURITY.md) | What the game can reach, how to verify a download, and how to report a problem privately |
+| [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) | The Contributor Covenant |
+| [docs/RELEASE.md](docs/RELEASE.md) | How a release is cut, and why the pipeline refuses a tag that disagrees with the version |
 | [docs/TASARIM.md](docs/TASARIM.md) | The design, scene by scene. Spoilers, in Turkish |
 | [docs/ORIJINAL.md](docs/ORIJINAL.md) | What was read out of the 2023 build, in Turkish |
 | [docs/DURUM.md](docs/DURUM.md) | The working log: what is verified, what is not, in Turkish |
 | [public/assets/fonts/licenses](public/assets/fonts/licenses) | The typefaces and their licences |
+
+`main` takes no direct pushes. Every change arrives through a pull request that the pipeline has
+passed, and history is kept linear.
 
 ## Credits and licences
 
@@ -407,9 +465,17 @@ The full design is in [`docs/TASARIM.md`](docs/TASARIM.md), in Turkish.
 - **The 2023 original** was made by Team Unity 108 at the Oyun ve Uygulama Akademisi bootcamp in 2023
   and is published under the MIT licence at
   [OzcanOrhanDemirci/U-108](https://github.com/OzcanOrhanDemirci/U-108), where the team is listed.
-  The sprites, level art, pencil sketch, menu buttons, music and trailer narration in
-  `public/assets/2023` and `public/assets/audio` come from the 2023 build, and the 2023 dialogue is
-  quoted from it.
+  The sprites, level art, pencil sketch and menu buttons in `public/assets/2023` come from the 2023
+  build, and the 2023 dialogue is quoted from it. The team drew the character, its animation and the
+  backgrounds themselves.
+- **The trailer narration** (`public/assets/audio/ses_*.ogg`) is Özcan's own voice, recorded on
+  18 July 2023 at 06:51, a minute after the build.
+- **The piano piece** *Bir sonraki döngü* (`public/assets/audio/piyano*.ogg`) was written for this
+  release and is generated by [`tools/muzik/beste.py`](tools/muzik/beste.py), under the MIT licence
+  like the rest of the code. It is played on the
+  [Salamander Grand Piano](https://github.com/sfzinstruments/SalamanderGrandPiano) samples by
+  Alexander Holm, used under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). The 2023
+  piece is not included; [the music](#the-music) says why.
 - **Typefaces.** Fraunces, Inter and JetBrains Mono under the SIL Open Font License 1.1; Minecraftia
   by Andrew Tyler and Early GameBoy by LDEJRuff under CC BY-SA 3.0; 04b by Yuji Oshimoto as freeware.
   Details and licence texts are in [`public/assets/fonts/licenses`](public/assets/fonts/licenses).
