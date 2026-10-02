@@ -461,7 +461,8 @@ passed, and history is kept linear.
 
 ## Credits and licences
 
-- **The remake** is released under the MIT licence; see [LICENSE](LICENSE).
+- **The remake** is released under the MIT licence; see [LICENSE](LICENSE). What it does not cover is
+  listed in [NOTICE](NOTICE).
 - **The 2023 original** was made by Team Unity 108 at the Oyun ve Uygulama Akademisi bootcamp in 2023
   and is published under the MIT licence at
   [OzcanOrhanDemirci/U-108](https://github.com/OzcanOrhanDemirci/U-108), where the team is listed.
