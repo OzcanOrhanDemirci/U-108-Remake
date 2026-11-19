@@ -54,7 +54,7 @@ Releases are listed on the
 
 Use GitHub's
 [private vulnerability reporting](https://github.com/OzcanOrhanDemirci/U-108-Remake/security/advisories/new),
-or write to **ozcanorhandem@gmail.com** with `U-108 Remake security` in the subject.
+or write to **mail@ozcanorhandemirci.com** with `U-108 Remake security` in the subject.
 
 Please include what you found, the version or commit you found it in, and the steps to reach it. A
 report that can be reproduced is worth far more than one that has to be guessed at.
